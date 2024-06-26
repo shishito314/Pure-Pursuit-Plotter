@@ -1,0 +1,103 @@
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background-color: lightgrey;
+  overflow: hidden;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+img {
+  display: none;
+}
+
+#eisel {
+  display: grid;
+}
+#eisel > * {
+  grid-row: 1;
+  grid-column: 1;
+}
+
+#bgCanvas {
+  background-color: #e3eeff;
+  /* position: absolute; */
+  border: 5px solid black;
+  border-radius: 5px;
+  right: 0px;
+}
+#fgCanvas {
+  /* position: absolute; */
+  border: 5px solid black;
+  border-radius: 5px;
+  right: 0px;
+  /* margin-left: -100%; */
+}
+
+#sideBar {
+  /* position: absolute; */
+  left: 0;
+  background-color: lightgrey;
+  overflow-y: scroll;
+  flex-grow: 1;
+  height: 100%;
+}
+
+#controlBar {
+  height: 200px;
+  background-color: grey;
+  margin: 5px;
+  border-radius: 10px;
+}
+
+.controlPointBlock {
+  background-color: #e3eeff;
+  width: calc(100% - 2 * 5px - 2 * 3px - 2 * 8px);
+  /* height: 100px; */
+  margin: 5px;
+  padding: 10px;
+  border: 2px solid royalblue;
+  border-radius: 10px;
+  display: flex;
+}
+
+.controlPointInputBox {
+  width: 50%;
+  display: flex;
+}
+
+.controlPointLabel {
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  margin-right: 2px;
+  margin-left: 5px;
+}
+
+.numInput {
+  border-radius: 3px;
+  flex-grow: 1;
+  appearance: none;
+  min-width: 0;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+#pageTitle {
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  font-size: 40px;
+  text-align: center;
+  background-color: grey;
+  margin: 5px;
+  border-radius: 8px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
