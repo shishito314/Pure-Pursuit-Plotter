@@ -46,20 +46,27 @@ function drawFG() {
 }
 
 function resize() {
-  const aspectRatio = innerWidth / innerHeight;
-  if (aspectRatio < TOTAL_ASPECT_RATIO) {
-    bgCanvas.width = fgCanvas.width =
-      (innerWidth / TOTAL_ASPECT_RATIO) * CANVAS_SIZE_RATIO -
-      2 * CANVAS_BORDER_THICKNESS;
-    bgCanvas.height = fgCanvas.height =
-      (innerWidth / TOTAL_ASPECT_RATIO) * CANVAS_SIZE_RATIO -
-      2 * CANVAS_BORDER_THICKNESS;
-  } else {
-    bgCanvas.height = fgCanvas.height =
-      innerHeight * CANVAS_SIZE_RATIO - 2 * CANVAS_BORDER_THICKNESS;
-    bgCanvas.width = fgCanvas.width =
-      innerHeight * CANVAS_SIZE_RATIO - 2 * CANVAS_BORDER_THICKNESS;
-  }
+  let eisel = document.getElementById("eisel").getBoundingClientRect();
+  bgCanvas.width =
+    fgCanvas.width =
+    bgCanvas.height =
+    fgCanvas.height =
+      eisel.width * CANVAS_SIZE_RATIO;
+
+  // const aspectRatio = innerWidth / innerHeight;
+  // if (aspectRatio < TOTAL_ASPECT_RATIO) {
+  //   bgCanvas.width = fgCanvas.width =
+  //     (innerWidth / TOTAL_ASPECT_RATIO) * CANVAS_SIZE_RATIO -
+  //     2 * CANVAS_BORDER_THICKNESS;
+  //   bgCanvas.height = fgCanvas.height =
+  //     (innerWidth / TOTAL_ASPECT_RATIO) * CANVAS_SIZE_RATIO -
+  //     2 * CANVAS_BORDER_THICKNESS;
+  // } else {
+  //   bgCanvas.height = fgCanvas.height =
+  //     innerHeight * CANVAS_SIZE_RATIO - 2 * CANVAS_BORDER_THICKNESS;
+  //   bgCanvas.width = fgCanvas.width =
+  //     innerHeight * CANVAS_SIZE_RATIO - 2 * CANVAS_BORDER_THICKNESS;
+  // }
   // if (innerWidth < innerHeight) {
   //   bgCanvas.width =
   //     fgCanvas.width =

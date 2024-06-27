@@ -2,7 +2,7 @@
   --clr-pale-blue: #e3eeff;
   --clr-light-blue: #a3aebf;
   --clr-mid-blue: royalblue;
-  --clr-dark-blue: blue;
+  --clr-dark-blue: #1a3153;
   --clr-light-grey: lightgrey;
   --clr-grey: grey;
   --clr-black: black;
@@ -19,11 +19,20 @@ body {
   overflow: hidden;
   margin: 0;
   display: flex;
-  align-items: center;
+  flex-direction: column;
 }
 
 img {
   display: none;
+}
+
+#mainContainer {
+  flex-grow: 1;
+  background-color: var(--clr-pale-blue);
+  overflow: hidden;
+  margin: 0;
+  display: flex;
+  align-items: center;
 }
 
 #eisel {
@@ -37,7 +46,7 @@ img {
 #bgCanvas {
   background-color: var(--clr-pale-blue);
   /* position: absolute; */
-  border: 5px solid var(--clr-black);
+  border: 5px solid var(--clr-dark-blue);
   border-radius: 5px;
   right: 0px;
   grid-row-start: 2;
@@ -47,7 +56,7 @@ img {
 }
 #fgCanvas {
   /* position: absolute; */
-  border: 5px solid var(--clr-black);
+  border: 5px solid var(--clr-dark-blue);
   border-radius: 5px;
   right: 0px;
   /* margin-left: -100%; */
@@ -75,7 +84,7 @@ img {
   height: 100px;
   background-color: var(--clr-light-blue);
   margin: 5px;
-  border-radius: 10px;
+  border-radius: 8px;
   display: flex;
 }
 
@@ -83,15 +92,45 @@ img {
   flex-grow: 1;
   margin: 5px;
   border-radius: 8px;
-  border: 2px solid var(--clr-mid-blue);
+  border: none;
   background-color: var(--clr-pale-blue);
+  transition: 0.3s;
 }
-
 .controlButton:hover {
   background-color: var(--clr-light-blue);
 }
-
 .controlButton:active {
+  background-color: var(--clr-pale-blue);
+}
+
+.tab {
+  background-color: var(--clr-light-blue);
+  margin: 5px;
+  border-radius: 8px;
+  display: flex;
+  overflow: hidden;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  flex-grow: 1;
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 14px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: var(--clr-pale-blue);
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
   background-color: var(--clr-pale-blue);
 }
 
@@ -143,10 +182,11 @@ input::-webkit-inner-spin-button {
   font-size: 40px;
   text-align: center;
   background-color: var(--clr-light-blue);
-  margin: 5px;
-  border-radius: 8px;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  /* margin: 5px; */
+  /* border-radius: 8px; */
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border-bottom: 3px solid var(--clr-dark-blue);
 }
 
 .sectionHeader {
@@ -162,8 +202,8 @@ input::-webkit-inner-spin-button {
   padding-bottom: 5px;
 }
 
-@media (max-width: 1603px) {
+/* @media (max-width: 1603px) {
   #pageTitle {
     display: none;
   }
-}
+} */

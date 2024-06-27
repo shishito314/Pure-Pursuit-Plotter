@@ -9,22 +9,41 @@
     <script type="module" src="app.mjs"></script>
   </head>
   <body>
-    <div id="sideBar">
-      <header id="pageTitle">Pure Pursuit Path Generator</header>
-      <div id="controlBar">
-        <button class="controlButton">Save</button>
-        <button class="controlButton">Path Point Mode</button>
-        <button class="controlButton">Run</button>
+    <header id="pageTitle">Pure Pursuit Path Generator</header>
+    <div id="mainContainer">
+      <div id="sideBar">
+        <div id="controlBar">
+          <button class="controlButton">Save</button>
+          <button class="controlButton">Path Point Mode</button>
+          <button class="controlButton">Run</button>
+        </div>
+        <div id="programSelector" class="tab">
+          <button>Auton 1</button>
+          <button>Auton 2</button>
+          <button>Auton 3</button>
+          <button>Auton 4</button>
+          <button>Auton 5</button>
+          <!-- Above buttons just for demo -->
+        </div>
+        <div id="pathSelector" class="tab">
+          <button>Path 1</button>
+          <button>Path 2</button>
+          <button>Path 3</button>
+          <button>Path 4</button>
+          <button>Path 5</button>
+          <!-- Above buttons just for demo -->
+        </div>
+
+        <div id="pointControlContainer">
+          <header class="sectionHeader">Control Points</header>
+        </div>
       </div>
-      <div id="pointControlContainer">
-        <header class="sectionHeader">Control Points</header>
+      <div id="eisel">
+        <canvas id="bgCanvas"></canvas>
+        <canvas id="fgCanvas"></canvas>
       </div>
+      <img src="./images/robot-image.svg" id="robotImage" />
+      <img src="./images/Cropped-Field.png" id="fieldImage" />
     </div>
-    <div id="eisel">
-      <canvas id="bgCanvas"></canvas>
-      <canvas id="fgCanvas"></canvas>
-    </div>
-    <img src="./images/robot-image.svg" id="robotImage" />
-    <img src="./images/Cropped-Field.png" id="fieldImage" />
   </body>
 </html>
