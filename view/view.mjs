@@ -3,6 +3,7 @@ import utilities from "../utilities.mjs";
 
 const TOTAL_ASPECT_RATIO = 4 / 3;
 const CANVAS_BORDER_THICKNESS = 5;
+const CANVAS_SIZE_RATIO = 0.8;
 
 const bgCanvas = document.getElementById("bgCanvas");
 const fgCanvas = document.getElementById("fgCanvas");
@@ -48,13 +49,16 @@ function resize() {
   const aspectRatio = innerWidth / innerHeight;
   if (aspectRatio < TOTAL_ASPECT_RATIO) {
     bgCanvas.width = fgCanvas.width =
-      innerWidth / TOTAL_ASPECT_RATIO - 2 * CANVAS_BORDER_THICKNESS;
+      (innerWidth / TOTAL_ASPECT_RATIO) * CANVAS_SIZE_RATIO -
+      2 * CANVAS_BORDER_THICKNESS;
     bgCanvas.height = fgCanvas.height =
-      innerWidth / TOTAL_ASPECT_RATIO - 2 * CANVAS_BORDER_THICKNESS;
+      (innerWidth / TOTAL_ASPECT_RATIO) * CANVAS_SIZE_RATIO -
+      2 * CANVAS_BORDER_THICKNESS;
   } else {
     bgCanvas.height = fgCanvas.height =
-      innerHeight - 2 * CANVAS_BORDER_THICKNESS;
-    bgCanvas.width = fgCanvas.width = innerHeight - 2 * CANVAS_BORDER_THICKNESS;
+      innerHeight * CANVAS_SIZE_RATIO - 2 * CANVAS_BORDER_THICKNESS;
+    bgCanvas.width = fgCanvas.width =
+      innerHeight * CANVAS_SIZE_RATIO - 2 * CANVAS_BORDER_THICKNESS;
   }
   // if (innerWidth < innerHeight) {
   //   bgCanvas.width =

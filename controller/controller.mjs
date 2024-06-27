@@ -47,12 +47,10 @@ function handleMM(e) {
   if (!mouseIsDown) return;
   model.path.generatePathPoints();
   if (movingPointIndex >= 0) {
-    let location = utilities.convertToModelCoords(
-      {
-        x: e.offsetX,
-        y: e.offsetY,
-      }
-    );
+    let location = utilities.convertToModelCoords({
+      x: e.offsetX,
+      y: e.offsetY,
+    });
     model.path.controlPoints[movingPointIndex] = location;
     setNumInputs(movingPointIndex, location);
   } else if (startingPath) {
@@ -63,14 +61,16 @@ function handleMM(e) {
     model.path.controlPoints[1] = location;
     setNumInputs(1, location);
 
-
     // y value swapped below because of different coordinate systems
     model.robot.angle = -Math.atan2(
       model.path.controlPoints[0].y - model.path.controlPoints[1].y,
       model.path.controlPoints[1].x - model.path.controlPoints[0].x
     );
   } else {
-    let locationA = utilities.convertToModelCoords({ x: e.offsetX, y: e.offsetY });
+    let locationA = utilities.convertToModelCoords({
+      x: e.offsetX,
+      y: e.offsetY,
+    });
     model.path.controlPoints[model.path.controlPoints.length - 3] = locationA;
     setNumInputs(model.path.controlPoints.length - 3, locationA);
     let locationB = utilities.lerp(
@@ -131,7 +131,7 @@ function addControlPoint(location) {
   model.path.controlPoints.push(location);
   let controlBlock = document.createElement("div");
   controlBlock.className = "controlPointBlock";
-  document.getElementById("sideBar").appendChild(controlBlock);
+  document.getElementById("pointControlContainer").appendChild(controlBlock);
   let xInputBox = document.createElement("span");
   xInputBox.className = "controlPointInputBox";
   let xInputLabel = document.createElement("label");
