@@ -51,7 +51,7 @@ function resize() {
     fgCanvas.width =
     bgCanvas.height =
     fgCanvas.height =
-      eisel.width * CANVAS_SIZE_RATIO;
+      eisel.width * CANVAS_SIZE_RATIO - CANVAS_BORDER_THICKNESS * 2;
 
   // const aspectRatio = innerWidth / innerHeight;
   // if (aspectRatio < TOTAL_ASPECT_RATIO) {
