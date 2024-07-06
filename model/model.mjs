@@ -2,7 +2,7 @@ import controller from "../controller/controller.mjs";
 import Robot from "../sprite/robot.mjs";
 import view from "../view/view.mjs";
 import PurePursuitController from "./pure-pursuit.mjs";
-import RobotPath from "./robot-path.mjs";
+import RobotPath from "./robot-path-simple.mjs";
 
 export const FIELD_SIZE = 144;
 export const ZOOM_OUT_SIZE = 300;
