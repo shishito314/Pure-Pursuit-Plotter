@@ -215,11 +215,14 @@ input::-webkit-inner-spin-button {
     "Lucida Sans", Arial, sans-serif;
   font-size: 30px;
   text-align: center;
-  border-radius: 8px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
   margin: 5px;
-  background-color: var(--clr-light-blue);
+  /* margin-bottom: 5px; */
+  /* background-color: var(--clr-light-blue); */
   padding-top: 5px;
   padding-bottom: 5px;
+  border-bottom: 3px solid var(--clr-black);
 }
 
 /* @media (max-width: 1603px) {
