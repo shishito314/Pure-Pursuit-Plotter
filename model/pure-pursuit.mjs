@@ -1,5 +1,4 @@
 import utilities from "../utilities.mjs";
-import view from "../view/view.mjs";
 import model from "./model.mjs";
 
 export const LOOK_AHEAD_RAD = 6; // total guess
@@ -32,8 +31,6 @@ export default class PurePursuitController {
         this.robot.pos,
         this.lookAheadRadius
       );
-      // this.lastFoundIndex = i;
-      // console.log(ints);
       for (let int of ints) {
         if (!int.x) continue;
         // needed to check if (int.x)??
@@ -42,18 +39,11 @@ export default class PurePursuitController {
           utilities.dist(this.robot.pos, this.path.pathPoints[i + 1])
         ) {
           this.lastFoundIndex = i;
-          return int; // ???
-        } else {
-          // this.lastFoundIndex = i + 1;
-          // ++this.lastFoundIndex;
+          return int;
         }
-        // TODO
       }
     }
-    // console.log(this.path.pathPoints[this.lastFoundIndex]);
-    // return this.path.pathPoints[this.lastFoundIndex + 1];
     return this.path.pathPoints[this.lastFoundIndex + 1];
-    // no valid found, so return pathpoints[lastfound]
   }
 
   update() {
@@ -61,27 +51,16 @@ export default class PurePursuitController {
     if (!this.path.pathPoints.length) return;
     let goalPoint = this.chooseGoalPoint();
     this.logPoint = goalPoint;
-
-    // console.log(goalPoint);
     let angleToGoalPoint = Math.atan2(
       // 180 to -180
       goalPoint.y - this.robot.pos.y,
       goalPoint.x - this.robot.pos.x
     );
-    // if (angleToGoalPoint < 0) angleToGoalPoint += 2 * Math.PI;
     let deltaAngle = utilities.angleRangePNPi(
       utilities.angleRangeZeroToTwoPi(angleToGoalPoint) -
         utilities.angleRangeZeroToTwoPi(this.robot.angle)
     );
-    // if (deltaAngle > Math.PI) {
-    //   deltaAngle = -(2 * Math.PI) + deltaAngle;
-    // } else if (deltaAngle < -Math.PI) {
-    //   deltaAngle = 2 * Math.PI + deltaAngle;
-    // }
-    // console.log((this.robot.angle * 180) / Math.PI);
-
     let deltaDist = utilities.dist(goalPoint, this.robot.pos);
-    // console.log(deltaDist);
 
     let linearVel = kPLinear * deltaDist;
     let angleVel = kPAngle * deltaAngle;
