@@ -1,5 +1,3 @@
-import model, { FIELD_SIZE } from "../model/model.mjs";
-import { LOOK_AHEAD_RAD } from "../model/pure-pursuit.mjs";
 import utilities from "../utilities.mjs";
 import Sprite from "./sprite.mjs";
 
@@ -34,7 +32,7 @@ export default class Robot extends Sprite {
       this.vel.r = VEL_MAX;
     }
     if (this.isTrackingPosition)
-      this.track.push({ x: this.pos.x, y: this.pos.y }); // for debugging and logging
+      this.track.push(utilities.point(this.pos.x, this.pos.y)); // for debugging and logging
     // check for this.vel.l = 0 and velL = velR
     // console.log((this.angle * 180) / Math.PI);
     if (this.vel.l === this.vel.r) {
@@ -44,21 +42,18 @@ export default class Robot extends Sprite {
       let arcLenR = this.vel.r * timeChange;
       let radLeft = 0;
       let angleTravel = arcLenR / (2 * Math.PI * this.wheelBaseWidth);
-      let localDelta = {
-        x: Math.sin(angleTravel) * (radLeft + this.wheelBaseWidth * 0.5),
-        y:
-          radLeft +
+      let localDelta = utilities.point(
+        Math.sin(angleTravel) * (radLeft + this.wheelBaseWidth * 0.5),
+        radLeft +
           this.wheelBaseWidth * 0.5 -
-          Math.cos(angleTravel) * (radLeft + this.wheelBaseWidth * 0.5),
-      };
-      let globalDelta = {
-        x:
-          localDelta.x * Math.cos(this.angle) -
+          Math.cos(angleTravel) * (radLeft + this.wheelBaseWidth * 0.5)
+      );
+      let globalDelta = utilities.point(
+        localDelta.x * Math.cos(this.angle) -
           localDelta.y * Math.sin(this.angle),
-        y:
-          localDelta.y * Math.cos(this.angle) +
-          localDelta.x * Math.sin(this.angle),
-      };
+        localDelta.y * Math.cos(this.angle) +
+          localDelta.x * Math.sin(this.angle)
+      );
       // console.log(radLeft);
       this.pos.x += globalDelta.x;
       this.pos.y += globalDelta.y; // ??? check coordinate systems
@@ -68,21 +63,18 @@ export default class Robot extends Sprite {
       let circumferenceRatio = this.vel.r / this.vel.l;
       let radLeft = this.wheelBaseWidth / (circumferenceRatio - 1);
       let angleTravel = arcLenL / (2 * Math.PI * radLeft);
-      let localDelta = {
-        x: Math.sin(angleTravel) * (radLeft + this.wheelBaseWidth * 0.5),
-        y:
-          radLeft +
+      let localDelta = utilities.point(
+        Math.sin(angleTravel) * (radLeft + this.wheelBaseWidth * 0.5),
+        radLeft +
           this.wheelBaseWidth * 0.5 -
-          Math.cos(angleTravel) * (radLeft + this.wheelBaseWidth * 0.5),
-      };
-      let globalDelta = {
-        x:
-          localDelta.x * Math.cos(this.angle) -
+          Math.cos(angleTravel) * (radLeft + this.wheelBaseWidth * 0.5)
+      );
+      let globalDelta = utilities.point(
+        localDelta.x * Math.cos(this.angle) -
           localDelta.y * Math.sin(this.angle),
-        y:
-          localDelta.y * Math.cos(this.angle) +
-          localDelta.x * Math.sin(this.angle),
-      };
+        localDelta.y * Math.cos(this.angle) +
+          localDelta.x * Math.sin(this.angle)
+      );
       // console.log(radLeft);
       this.pos.x += globalDelta.x;
       this.pos.y += globalDelta.y; // ??? check coordinate systems
@@ -97,12 +89,12 @@ export default class Robot extends Sprite {
     if (!this.track.length) return;
     this.con.strokeStyle = "red";
     this.con.beginPath(); // for debugging and logging
-    let start = utilities.convertToCanvasCoords(this.track[0]);
+    let start = utilities.convertPointToCanvasCoords(this.track[0]);
     // console.log(this.track[0]);
     this.con.moveTo(start.x, start.y);
     // this.con.moveTo(0, 0);
     for (let point of this.track) {
-      let p = utilities.convertToCanvasCoords(point);
+      let p = utilities.convertPointToCanvasCoords(point);
       this.con.lineTo(p.x, p.y);
       // this.con.lineTo(200, 200);
     }

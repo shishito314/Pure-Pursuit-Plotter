@@ -1,7 +1,8 @@
 import view from "../view/view.mjs";
 import model from "../model/model.mjs";
 import utilities from "../utilities.mjs";
-import { PathPointControl } from "./path-point-control.mjs";
+import PathPointControl from "./path-point-control.mjs";
+import { makePathPoint } from "../model/path-point.mjs";
 
 view.fgCanvas.addEventListener("mousedown", handleMD);
 view.fgCanvas.addEventListener("mouseup", handleMU);
@@ -18,18 +19,20 @@ let shiftIsUp = true;
 // -------------------- PATHING CONTROLS --------------------
 function handleMD(e) {
   mouseIsDown = true;
-  // let location = utilities.convertToModelCoords({ x: e.offsetX, y: e.offsetY });
   for (let i = 0; i < model.path.pathPoints.length; ++i) {
-    if (utilities.dist(model.path.pathPoints[i], utilities.convertToModelCoords({ x: e.offsetX, y: e.offsetY })) < MOVE_THRESHOLD) {
+    if (
+      utilities.dist(
+        model.path.pathPoints[i],
+        utilities.convertToModelCoords(e.offsetX, e.offsetY)
+      ) < MOVE_THRESHOLD
+    ) {
       movingPointIndex = i;
       return;
     }
   }
-  addControlPoint(utilities.convertToModelCoords({ x: e.offsetX, y: e.offsetY }));
+  addControlPoint(utilities.convertToModelCoords(e.offsetX, e.offsetY));
   if (startingPath) {
-    addControlPoint(utilities.convertToModelCoords({ x: e.offsetX, y: e.offsetY }));
-  }
-  if (startingPath) {
+    addControlPoint(utilities.convertToModelCoords(e.offsetX, e.offsetY));
     model.robot.pos.x = model.path.pathPoints[0].x;
     model.robot.pos.y = model.path.pathPoints[0].y;
   }
@@ -43,19 +46,12 @@ function handleMU(e) {
 
 function handleMM(e) {
   if (!mouseIsDown) return;
+  let location = utilities.convertToModelCoords(e.offsetX, e.offsetY);
   if (movingPointIndex >= 0) {
-    let location = utilities.convertToModelCoords({
-      x: e.offsetX,
-      y: e.offsetY,
-    });
-    model.path.pathPoints[movingPointIndex] = location;
+    model.path.pathPoints[movingPointIndex].setLocation(location);
     setNumInputs(movingPointIndex, location);
   } else if (startingPath) {
-    let location = utilities.convertToModelCoords({
-      x: e.offsetX,
-      y: e.offsetY,
-    });
-    model.path.pathPoints[1] = location;
+    model.path.pathPoints[1].setLocation(location);
     setNumInputs(1, location);
     // y value swapped below because of different coordinate systems
     model.robot.angle = -Math.atan2(
@@ -109,9 +105,12 @@ function handleKU(e) {
 }
 
 // -------------------- HTML CONTROLS --------------------
+let isFwd = true;
 function addControlPoint(location) {
-  model.path.pathPoints.push(location);
-  new PathPointControl(location);
+  let p = makePathPoint(location, isFwd, false);
+  model.path.pathPoints.push(p);
+  isFwd = !isFwd;
+  new PathPointControl(p);
 }
 
 export default {};

@@ -15,11 +15,11 @@ const bgImg = document.getElementById("fieldImage");
 
 function drawBG() {
   bgContext.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
-  let cornerBL = utilities.convertToCanvasCoords({ x: 0, y: 0 });
-  let cornerTR = utilities.convertToCanvasCoords({
-    x: model.FIELD_SIZE,
-    y: model.FIELD_SIZE,
-  });
+  let cornerBL = utilities.convertToCanvasCoords(0, 0);
+  let cornerTR = utilities.convertToCanvasCoords(
+    model.FIELD_SIZE,
+    model.FIELD_SIZE
+  );
   bgContext.drawImage(
     bgImg,
     cornerBL.x,

@@ -1,15 +1,20 @@
-import Point from "./point.mjs";
+import utilities from "../utilities.mjs";
 
 export class PathPoint {
-    constructor(location, isFwd, isStop) {
-        this.pos = location;
-        this.isFwd = isFwd; // line segment after
-        this.isStop = isStop;
-    }
+  constructor(x, y, isFwd, isStop) {
+    this.x = x;
+    this.y = y;
+    this.isFwd = isFwd; // line segment after
+    this.isStop = isStop;
+  }
+  setLocation(newLocation) {
+    this.x = newLocation.x;
+    this.y = newLocation.y;
+  }
 }
 
-export function makePathPoint(x, y, isFwd, isStop) {
-    return new PathPoint(new Point(x,y), isFwd, isStop)
+export function makePathPoint(p, isFwd, isStop) {
+  return new PathPoint(p.x, p.y, isFwd, isStop);
 }
 
-export default {PathPoint, makePathPoint}
+export default { PathPoint, makePathPoint };

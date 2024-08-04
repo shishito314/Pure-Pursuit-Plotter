@@ -7,7 +7,8 @@ export const FIELD_SIZE = 144;
 export const ZOOM_OUT_SIZE = 300;
 export let isZoomedOut = false;
 
-export let path = new RobotPath(view.fgCanvas, view.fgContext);
+let robotPaths = [new RobotPath(view.fgCanvas, view.fgContext)];
+export let path = robotPaths[0];
 export let robot = new Robot(
   view.fgCanvas,
   view.fgContext,

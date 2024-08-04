@@ -4,6 +4,7 @@ import model from "./model.mjs";
 export const LOOK_AHEAD_RAD = 6; // total guess
 const kPLinear = 0.15 / LOOK_AHEAD_RAD;
 const kPAngle = 1.5 / LOOK_AHEAD_RAD;
+const STOP_TOLERANCE = 1;
 
 export default class PurePursuitController {
   constructor(can, con, robot, path) {
@@ -15,6 +16,7 @@ export default class PurePursuitController {
     this.lookAheadRadius = LOOK_AHEAD_RAD;
     this.lastFoundIndex = 0;
     this.isRunning = false;
+    this.isFwd = true;
   }
 
   chooseGoalPoint() {
@@ -34,15 +36,30 @@ export default class PurePursuitController {
       for (let int of ints) {
         if (!int.x) continue;
         // needed to check if (int.x)??
+        // if (
+        //   this.path.pathPoints[this.lastFoundIndex].isFwd !=
+        //   this.path.pathPoints[this.lastFoundIndex + 1].isFwd
+        // ) {
+        // }
         if (
           utilities.dist(int, this.path.pathPoints[i + 1]) <
           utilities.dist(this.robot.pos, this.path.pathPoints[i + 1])
         ) {
+          if (i != this.lastFoundIndex) {
+            if (
+              utilities.dist(this.robot.pos, this.path.pathPoints[i]) >
+              STOP_TOLERANCE
+            ) {
+              return this.path.pathPoints[i];
+            }
+          }
           this.lastFoundIndex = i;
+          this.isFwd = this.path.pathPoints[this.lastFoundIndex].isFwd;
           return int;
         }
       }
     }
+    this.isFwd = this.path.pathPoints[this.lastFoundIndex].isFwd;
     return this.path.pathPoints[this.lastFoundIndex + 1];
   }
 
@@ -58,19 +75,23 @@ export default class PurePursuitController {
     );
     let deltaAngle = utilities.angleRangePNPi(
       utilities.angleRangeZeroToTwoPi(angleToGoalPoint) -
-        utilities.angleRangeZeroToTwoPi(this.robot.angle)
+        utilities.angleRangeZeroToTwoPi(
+          this.isFwd ? this.robot.angle : Math.PI + this.robot.angle
+        )
     );
     let deltaDist = utilities.dist(goalPoint, this.robot.pos);
-
-    let linearVel = kPLinear * deltaDist;
+    let linearVel = kPLinear * deltaDist * (this.isFwd ? 1 : -1);
     let angleVel = kPAngle * deltaAngle;
+    // if (Math.abs(deltaAngle) > Math.PI / 3) {
+    //   linearVel = 0;
+    // }
 
     this.robot.vel.l = linearVel - angleVel;
     this.robot.vel.r = linearVel + angleVel;
   }
 
   draw() {
-    let viewPos = utilities.convertToCanvasCoords(this.robot.pos);
+    let viewPos = utilities.convertPointToCanvasCoords(this.robot.pos);
     this.con.beginPath();
     this.con.arc(
       viewPos.x,
@@ -81,7 +102,7 @@ export default class PurePursuitController {
     );
     this.con.stroke();
     if (this.logPoint) {
-      let viewPosLogPoint = utilities.convertToCanvasCoords(this.logPoint);
+      let viewPosLogPoint = utilities.convertPointToCanvasCoords(this.logPoint);
       this.con.beginPath();
       this.con.arc(viewPosLogPoint.x, viewPosLogPoint.y, 5, 0, 2 * Math.PI);
       this.con.fillStyle = "green";
