@@ -73,10 +73,15 @@ function handleKD(e) {
     case "KeyR":
       model.robot.pos.x = model.path.pathPoints[0].x;
       model.robot.pos.y = model.path.pathPoints[0].y;
+      model.robot.vel.l = 0;
+      model.robot.vel.r = 0;
       model.robot.angle = -Math.atan2(
         model.path.pathPoints[0].y - model.path.pathPoints[1].y,
         model.path.pathPoints[1].x - model.path.pathPoints[0].x
       );
+      model.robot.track = [];
+      model.robotController.isRunning = false;
+      model.robotController.lastFoundIndex = 0;
       break;
     case "ShiftLeft":
       model.isZoomedOut = true;
