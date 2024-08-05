@@ -45,7 +45,11 @@ export default class PurePursuitController {
           utilities.dist(int, this.path.pathPoints[i + 1]) <
           utilities.dist(this.robot.pos, this.path.pathPoints[i + 1])
         ) {
-          if (i != this.lastFoundIndex) {
+          if (
+            i != this.lastFoundIndex &&
+            this.path.pathPoints[this.lastFoundIndex].isFwd !=
+              this.path.pathPoints[this.lastFoundIndex + 1].isFwd
+          ) {
             if (
               utilities.dist(this.robot.pos, this.path.pathPoints[i]) >
               STOP_TOLERANCE

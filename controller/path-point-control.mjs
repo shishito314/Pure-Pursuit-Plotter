@@ -64,11 +64,19 @@ export default class PathPointControl {
 
     this.xInput.addEventListener("change", this.changeX.bind(this));
     this.yInput.addEventListener("change", this.changeY.bind(this));
+    this.isFwdButton.addEventListener("click", this.changeFwd.bind(this));
+    this.isStopButton.addEventListener("click", this.changeStop.bind(this));
   }
   changeX() {
     this.pathPoint.x = Number(this.xInput.value);
   }
   changeY() {
     this.pathPoint.y = Number(this.yInput.value);
+  }
+  changeFwd() {
+    this.pathPoint.isFwd = this.isFwdButton.checked;
+  }
+  changeStop() {
+    this.pathPoint.isStop = this.isStopButton.checked;
   }
 }

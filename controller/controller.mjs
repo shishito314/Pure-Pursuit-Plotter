@@ -105,11 +105,9 @@ function handleKU(e) {
 }
 
 // -------------------- HTML CONTROLS --------------------
-let isFwd = true;
 function addControlPoint(location) {
-  let p = makePathPoint(location, isFwd, false);
+  let p = makePathPoint(location, true, false);
   model.path.pathPoints.push(p);
-  isFwd = !isFwd;
   new PathPointControl(p);
 }
 
