@@ -26,10 +26,16 @@ export default class Robot extends Sprite {
     if (this.vel.l > VEL_MAX) {
       this.vel.r *= VEL_MAX / this.vel.l;
       this.vel.l = VEL_MAX;
+    } else if (this.vel.l < -VEL_MAX) {
+      this.vel.r *= -VEL_MAX / this.vel.l;
+      this.vel.l = -VEL_MAX;
     }
     if (this.vel.r > VEL_MAX) {
       this.vel.l *= VEL_MAX / this.vel.r;
       this.vel.r = VEL_MAX;
+    } else if (this.vel.r < -VEL_MAX) {
+      this.vel.l *= -VEL_MAX / this.vel.r;
+      this.vel.r = -VEL_MAX;
     }
     if (this.isTrackingPosition)
       this.track.push(utilities.point(this.pos.x, this.pos.y)); // for debugging and logging

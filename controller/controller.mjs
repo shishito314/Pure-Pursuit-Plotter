@@ -82,6 +82,7 @@ function handleKD(e) {
       model.robot.track = [];
       model.robotController.isRunning = false;
       model.robotController.lastFoundIndex = 0;
+      model.robot.isTrackingPosition = false;
       break;
     case "ShiftLeft":
       model.isZoomedOut = true;
@@ -89,8 +90,9 @@ function handleKD(e) {
       shiftIsUp = false;
       break;
     case "Enter":
-      model.robotController.isRunning = true;
+      // model.robotController.isRunning = true;
       model.robot.isTrackingPosition = true;
+      model.robotController.goToNextStop();
       break;
     // todo: control z
     // todo: shift

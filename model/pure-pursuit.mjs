@@ -4,7 +4,7 @@ import model from "./model.mjs";
 export const LOOK_AHEAD_RAD = 6; // total guess
 const kPLinear = 0.15 / LOOK_AHEAD_RAD;
 const kPAngle = 1.5 / LOOK_AHEAD_RAD;
-const STOP_TOLERANCE = 1;
+const STOP_TOLERANCE = 2;
 
 export default class PurePursuitController {
   constructor(can, con, robot, path) {
@@ -17,6 +17,7 @@ export default class PurePursuitController {
     this.lastFoundIndex = 0;
     this.isRunning = false;
     this.isFwd = true;
+    this.atStopYet = false;
   }
 
   chooseGoalPoint() {
@@ -41,22 +42,34 @@ export default class PurePursuitController {
         //   this.path.pathPoints[this.lastFoundIndex + 1].isFwd
         // ) {
         // }
-        if (
-          utilities.dist(int, this.path.pathPoints[i + 1]) <
-          utilities.dist(this.robot.pos, this.path.pathPoints[i + 1])
-        ) {
-          if (
-            i != this.lastFoundIndex &&
+        if (i != this.lastFoundIndex) {
+          if (this.path.pathPoints[this.lastFoundIndex + 1].isStop) {
+            if (
+              utilities.dist(this.robot.pos, this.path.pathPoints[i]) >
+              STOP_TOLERANCE
+            ) {
+              // edit - will go all the way back if a flip backwards point is missed
+              return this.path.pathPoints[i];
+            } else {
+              this.atStopYet = true;
+            }
+          } else if (
             this.path.pathPoints[this.lastFoundIndex].isFwd !=
-              this.path.pathPoints[this.lastFoundIndex + 1].isFwd
+            this.path.pathPoints[this.lastFoundIndex + 1].isFwd
           ) {
             if (
               utilities.dist(this.robot.pos, this.path.pathPoints[i]) >
               STOP_TOLERANCE
             ) {
+              // edit - will go all the way back if a flip backwards point is missed
               return this.path.pathPoints[i];
             }
           }
+        }
+        if (
+          utilities.dist(int, this.path.pathPoints[i + 1]) <
+          utilities.dist(this.robot.pos, this.path.pathPoints[i + 1])
+        ) {
           this.lastFoundIndex = i;
           this.isFwd = this.path.pathPoints[this.lastFoundIndex].isFwd;
           return int;
@@ -92,6 +105,16 @@ export default class PurePursuitController {
 
     this.robot.vel.l = linearVel - angleVel;
     this.robot.vel.r = linearVel + angleVel;
+    if (this.atStopYet) {
+      this.isRunning = false;
+      this.robot.vel.l = 0;
+      this.robot.vel.r = 0;
+    }
+  }
+
+  goToNextStop() {
+    this.isRunning = true;
+    this.atStopYet = false;
   }
 
   draw() {
