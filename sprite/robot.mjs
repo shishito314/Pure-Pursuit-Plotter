@@ -1,7 +1,7 @@
 import utilities from "../utilities.mjs";
 import Sprite from "./sprite.mjs";
 
-const VEL_MAX = 0.2;
+const VEL_MAX = 0.075;
 
 export default class Robot extends Sprite {
   constructor(can, con, posX, posY, angle, dimX, dimY, wheelBaseWidth) {
@@ -39,20 +39,18 @@ export default class Robot extends Sprite {
     }
     if (this.isTrackingPosition)
       this.track.push(utilities.point(this.pos.x, this.pos.y)); // for debugging and logging
-    // check for this.vel.l = 0 and velL = velR
-    // console.log((this.angle * 180) / Math.PI);
     if (this.vel.l === this.vel.r) {
-      this.pos.x += Math.cos(this.angle) * this.vel.l;
-      this.pos.x += Math.sin(this.angle) * this.vel.l;
+      // console.log("In");
+      this.pos.x += Math.cos(this.angle) * this.vel.l * timeChange;
+      this.pos.y += Math.sin(this.angle) * this.vel.l * timeChange;
     } else if (this.vel.l === 0) {
       let arcLenR = this.vel.r * timeChange;
-      let radLeft = 0;
-      let angleTravel = arcLenR / (2 * Math.PI * this.wheelBaseWidth);
+      let angleTravel = arcLenR / (Math.PI * this.wheelBaseWidth);
       let localDelta = utilities.point(
-        Math.sin(angleTravel) * (radLeft + this.wheelBaseWidth * 0.5),
-        radLeft +
-          this.wheelBaseWidth * 0.5 -
-          Math.cos(angleTravel) * (radLeft + this.wheelBaseWidth * 0.5)
+        2 *
+          Math.sin((arcLenR * 0.5) / (Math.PI * this.wheelBaseWidth)) *
+          (this.wheelBaseWidth * 0.5),
+        (1 - Math.cos(angleTravel)) * (this.wheelBaseWidth * 0.5)
       );
       let globalDelta = utilities.point(
         localDelta.x * Math.cos(this.angle) -
@@ -60,7 +58,6 @@ export default class Robot extends Sprite {
         localDelta.y * Math.cos(this.angle) +
           localDelta.x * Math.sin(this.angle)
       );
-      // console.log(radLeft);
       this.pos.x += globalDelta.x;
       this.pos.y += globalDelta.y; // ??? check coordinate systems
       this.angle += angleTravel; // ??
@@ -68,24 +65,29 @@ export default class Robot extends Sprite {
       let arcLenL = this.vel.l * timeChange;
       let circumferenceRatio = this.vel.r / this.vel.l;
       let radLeft = this.wheelBaseWidth / (circumferenceRatio - 1);
-      let angleTravel = arcLenL / (2 * Math.PI * radLeft);
+      let angleTravel =
+        (timeChange * (this.vel.r - this.vel.l) * Math.PI) /
+        (Math.PI * this.wheelBaseWidth);
+      // console.log(angleTravel);
       let localDelta = utilities.point(
-        Math.sin(angleTravel) * (radLeft + this.wheelBaseWidth * 0.5),
-        radLeft +
-          this.wheelBaseWidth * 0.5 -
-          Math.cos(angleTravel) * (radLeft + this.wheelBaseWidth * 0.5)
+        2 *
+          Math.PI *
+          Math.sin((arcLenL / Math.PI / radLeft) * 0.5) *
+          (radLeft + this.wheelBaseWidth * 0.5),
+        (1 - Math.cos(-angleTravel)) * (radLeft + this.wheelBaseWidth * 0.5)
       );
+      // console.log(localDelta.x / timeChange, localDelta.y / timeChange);
       let globalDelta = utilities.point(
         localDelta.x * Math.cos(this.angle) -
           localDelta.y * Math.sin(this.angle),
         localDelta.y * Math.cos(this.angle) +
           localDelta.x * Math.sin(this.angle)
       );
-      // console.log(radLeft);
       this.pos.x += globalDelta.x;
       this.pos.y += globalDelta.y; // ??? check coordinate systems
       this.angle += angleTravel; // ??
     }
+    // console.log(utilities.dist(this.pos, prevPos) / timeChange);
     // TODO
     // this.pos.x += this.vel.x * timeChange;
     // this.pos.y += this.vel.y * timeChange;

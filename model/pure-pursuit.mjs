@@ -2,8 +2,8 @@ import utilities from "../utilities.mjs";
 import model from "./model.mjs";
 
 export const LOOK_AHEAD_RAD = 6; // total guess
-const kPLinear = 0.15 / LOOK_AHEAD_RAD;
-const kPAngle = 1.5 / LOOK_AHEAD_RAD;
+const kPLinear = 0.05 / LOOK_AHEAD_RAD;
+const kPAngle = 0.5 / LOOK_AHEAD_RAD;
 const STOP_TOLERANCE = 2;
 
 export default class PurePursuitController {
