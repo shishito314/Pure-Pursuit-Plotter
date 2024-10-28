@@ -1,0 +1,373 @@
+:root {
+  --clr-pale-blue: #e3eeff;
+  --clr-light-blue: #a3aebf;
+  /* --clr-light-blue: #a3aebf; */
+  --clr-mid-blue: #838e9f;
+  --clr-deep-blue: #353e4a;
+  --clr-dark-blue: #000910;
+  --clr-light-grey: lightgrey;
+  --clr-grey: grey;
+  --clr-black: black;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background-color: var(--clr-pale-blue);
+  overflow: hidden;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+img {
+  display: none;
+}
+
+#mainContainer {
+  flex-grow: 1;
+  background-color: var(--clr-dark-blue);
+  overflow: hidden;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+#sideBarLeft {
+  /* position: absolute; */
+  left: 0;
+  /* background-color: var(--clr-deep-blue); */
+  /* border-image: linear-gradient(to right, #353e4a, #050e1a) 30; */
+  background-image: linear-gradient(to right, var(--clr-deep-blue), var(--clr-dark-blue));
+  /* border-right */
+  display: flex;
+  flex-direction: column;
+  /* overflow: hidden; */
+  flex-grow: 1;
+  height: 100%;
+}
+
+#pageTitle {
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  font-size: 28px;
+  text-align: center;
+  color:white;
+  /* background-color: var(--clr-light-blue); */
+  /* margin: 5px; */
+  /* border-radius: 8px; */
+  padding-top: 8px;
+  padding-bottom: 8px;
+  /* border-bottom: 3px solid var(--clr-dark-blue); */
+}
+
+.sectionHeader {
+  width: calc(100% - 2 * 5px);
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  font-size: 30px;
+  text-align: center;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  margin: 5px;
+  /* margin-bottom: 5px; */
+  /* background-color: var(--clr-light-blue); */
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-bottom: 3px solid white;
+}
+
+#eisel {
+  display: grid;
+  aspect-ratio: 0.96;
+  height: 100%;
+  grid-template-rows: 3.92% 92.16% 3.92%;
+  grid-template-columns: 2% 96% 2%;
+  border-radius: 8px;
+}
+
+#bgCanvas {
+  background-color: var(--clr-dark-blue);
+  /* position: absolute; */
+  /* border: 2px solid var(--clr-dark-blue); */
+  border-radius: inherit;
+  right: 0px;
+  grid-row-start: 2;
+  grid-row-end: 3;
+  grid-column-start: 2;
+  grid-column-end: 3;
+}
+#fgCanvas {
+  /* position: absolute; */
+  /* border: 2px solid var(--clr-dark-blue); */
+  border-radius: inherit;
+  right: 0px;
+  /* margin-left: -100%; */
+  grid-row-start: 2;
+  grid-row-end: 3;
+  grid-column-start: 2;
+  grid-column-end: 3;
+}
+
+#sideBarRight {
+  /* position: absolute; */
+  right: 0;
+  /* background-color: var(--clr-dark-blue); */
+  background-image: linear-gradient(to left, var(--clr-deep-blue), var(--clr-dark-blue));
+  display: flex;
+  flex-direction: column;
+  /* overflow: hidden; */
+  min-width: 300px;
+  flex-grow: 1;
+  height: 100%;
+  padding: 2px;
+}
+
+#clipboardButton {
+  position:relative;
+  right:-5px;
+  height: 50px;
+  width: calc(100% + 5px);
+  /* border-radius: 8px; */
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  /* border-image: linear-gradient(to left, var(--clr-deep-blue) 0%, var(--clr-dark-blue) 100%) 2; */
+  border: 2px solid white;
+  border-right: none;
+  /* background-color: var(--clr-deep-blue); */
+  background-color: rgba(106, 121, 143, 0);
+  /* opacity: 0; */
+  /* background-image: linear-gradient(to left, var(--clr-deep-blue), var(--clr-dark-blue)); */
+  /* background-color: linear-gradient(to left, var(--clr-deep-blue), var(--clr-dark-blue)); */
+  margin-top: 15px;
+  margin-left: -5px;
+  margin-right: 0;
+  font-size: 18px;
+  color: white;
+  transition: 0.5s;
+}
+
+#clipboardButton:hover {
+  /* background-image: none; */
+  background-color: rgba(106, 121, 143, 1);
+  /* opacity: 1; */
+  transform-origin: 100%;
+  transform: rotate(2deg);
+  transition:0.5s;
+}
+#clipboardButton:active {
+  background-image: none;
+  background-color: var(--clr-light-blue);
+  transform-origin: 100%;
+  transform: rotate(0deg);
+  transition: 0.1s;
+}
+
+#output {
+  /* height: 100%; */
+  flex-grow: 1;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  border: 2px solid white;
+  border-right: none;
+  /* background-color: var(--clr-deep-blue); */
+  margin-top: 5px;
+  margin-bottom: 15px;
+  margin-left: 0px;
+  margin-right: 0;
+  color: white;
+  padding: 10px;
+  line-height: 150%;
+}
+
+#controlBar {
+  /* height: 100px; */
+  /* background-color: var(--clr-light-blue); */
+  margin: 5px;
+  border-radius: 8px;
+  /* border: 2px solid white; */
+  /* position: sticky; */
+  /* top: 0px; */
+  /* display: flex; */
+}
+#controlButtonsContainer {
+  display: flex;
+  height: 100px;
+  border-radius: inherit;
+}
+.controlButton {
+  flex-grow: 1;
+  margin: 5px;
+  border: 1px solid var(--clr-pale-blue);
+  border-radius: inherit;
+  /* background-color: var(--clr-pale-blue); */
+  transition: 0.3s;
+}
+.controlButton:hover {
+  background-color: inherit;
+}
+.controlButton:active {
+  /* background-color: var(--clr-pale-blue); */
+  transition: 0.1s;
+}
+
+.tab {
+  /* background-color: var(--clr-light-blue); */
+  margin: 5px;
+  border-radius: 8px;
+  /* border:none; */
+  display: flex;
+  overflow: visible;
+}
+/* Style the buttons inside the tab */
+.tab button {
+  flex-grow: 1;
+  /* background-color: none; */
+  background:none;
+  float: left;
+  border: 1px solid var(--clr-pale-blue);
+  border-radius: inherit;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 14px;
+  color: white;
+}
+/* Change background color of buttons on hover */
+.tab button:hover {
+  /* border: 3px solid var(--clr-light-blue); */
+  background: var(--clr-deep-blue);
+  transform: scale(1.02);
+}
+/* Create an active/current tablink class */
+.tab button:active {
+  /* border: 3px solid var(--clr-light-blue); */
+  background-color: var(--clr-dark-blue);
+  /* transition: 0.1s; */
+}
+#addProgramButton {
+  flex-grow: 0;
+  margin-left: 5px;
+  transition: 0.3s;
+}
+#addProgramButton:hover {
+  transform: scale(1.075);
+}
+#pointControlContainer {
+  /* background-color: var(--clr-light-blue); */
+  border-radius: 8px;
+  margin: 5px;
+  overflow-y: auto;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#pointControlContainer::-webkit-scrollbar {
+  /* display: none; */
+  /* scrollbar-width: thin; */
+  width: 7px;
+  /* color: white; */
+  /* margin: 5px; */
+}
+#pointControlContainer::-webkit-scrollbar-track {
+  background-color: var(--clr-light-blue);
+  border-radius: 3.5px;
+}
+#pointControlContainer::-webkit-scrollbar-thumb {
+  background: white;
+  border-radius: 3.5px;
+}
+
+#insertGraphic {
+  height: 0px;
+  padding: 0;
+  margin: 0;
+  width: 300px;
+  border: 1px solid red;
+  display: none;
+  position: absolute;
+}
+
+.controlPointBlock {
+  /* background-color: var(--clr-light-blue); */
+  width: calc(100% - 2 * 5px - 2 * 3px - 2 * 8px);
+  /* height: 100px; */
+  margin: 5px;
+  padding: 10px;
+  /* border: 2px solid var(--clr-mid-blue); */
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.controlPointInputBox {
+  /* margin-left:8px;
+  margin-right:8px;
+  margin-top:3px;
+  margin-bottom:3px;
+  width: 100%; */
+
+  /* width: 80px; */
+  /* flex-grow:-1; */
+  display: flex;
+  /* justify-content: space-between; */
+}
+
+.controlPointLabel {
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  margin-right: 2px;
+  margin-left: 5px;
+}
+
+.numInput {
+  /* border-radius: 3px; */
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  /* flex-grow: 1; */
+  appearance: none;
+  min-width: 0;
+  width: 45px;
+  /* width:50; */
+  /* border: 1px solid var(--clr-mid-blue); */
+  border: none;
+  border-bottom: 2px solid white;
+  color: white;
+  background-color: rgba(0,0,0,0);/*var(--clr-pale-blue);*/
+}
+.numInput:focus {
+  /* border: 3px solid var(--clr-mid-blue); */
+  /* outline: 2px solid var(--clr-mid-blue); */
+  outline: none;
+}
+
+.deleteButton {
+  background: none;
+  border:2px solid white;
+  color: white;
+  border-radius: 5px;
+  margin:3px;
+  transition: 0.2s;
+}
+.deleteButton:hover {
+  transform: scale(0.98) translate(1px, 1px);
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+
+/* @media (max-width: 1603px) {
+  #pageTitle {
+    display: none;
+  }
+} */

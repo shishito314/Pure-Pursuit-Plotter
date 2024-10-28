@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pure Pursuit</title>
+    <link rel="stylesheet" href="style.css" />
+
+    <script type="module" src="app.mjs"></script>
+  </head>
+  <body>
+    <div id="mainContainer">
+      <div id="table-panel">
+        <header id="pageTitle">25600X - Pure Pursuit Path Generator</header>
+        <div id="controlBar">
+          <div id="programSelector" class="tab">
+            <button>Path 1</button>
+            <button id="addProgramButton">+</button>
+          </div>
+        </div>
+        <div id="pointControlContainer">
+          <header class="sectionHeader">Control Points</header>
+          <div id="insertGraphic"></div>
+        </div>
+      </div>
+      <div id="graphic-panel"></div>
+      <!-- <div id="sideBarRight">
+        <button id="clipboardButton">Copy To Clipboard</button>
+        <p id="output"></p>
+      </div> -->
+    </div>
+    <img src="./images/robot-image.svg" id="robotImage" />
+    <img src="./images/Cropped-Field.png" id="fieldImage" />
+  </body>
+</html>
