@@ -7,14 +7,28 @@ import { makePathPoint } from "../model/path-point.mjs";
 view.fgCanvas.addEventListener("mousedown", handleMD);
 view.fgCanvas.addEventListener("mouseup", handleMU);
 view.fgCanvas.addEventListener("mousemove", handleMM);
+view.fgCanvas.addEventListener("wheel", handleWheel);
 document.addEventListener("keydown", handleKD);
 document.addEventListener("keyup", handleKU);
+// documen
+
+document.getElementById("addProgramButton").addEventListener("click", model.addAuton)
+let pointControlContainer = document.getElementById("pointControlContainer");
+pointControlContainer.addEventListener("click", handlePointControlBoxClick);
+pointControlContainer.addEventListener("mousemove", handlePointControlBoxMove);
+let insertGraphic = document.getElementById("insertGraphic");
 
 let startingPath = true;
 let mouseIsDown = false;
 const MOVE_THRESHOLD = 5;
 let movingPointIndex = -1;
 let shiftIsUp = true;
+
+export let pointControls = [];
+
+export function removePointControl(index) {
+  pointControls.splice(index, 1);
+}
 
 // -------------------- PATHING CONTROLS --------------------
 function handleMD(e) {
@@ -30,12 +44,16 @@ function handleMD(e) {
       return;
     }
   }
-  addControlPoint(utilities.convertToModelCoords(e.offsetX, e.offsetY));
+  let loc = utilities.convertToModelCoords(e.offsetX, e.offsetY);
+  loc.x = Math.round(loc.x * 100) / 100;
+  loc.y = Math.round(loc.y * 100) / 100;
+  addControlPoint(loc);
   if (startingPath) {
-    addControlPoint(utilities.convertToModelCoords(e.offsetX, e.offsetY));
+    addControlPoint(loc);
     model.robot.pos.x = model.path.pathPoints[0].x;
     model.robot.pos.y = model.path.pathPoints[0].y;
   }
+  document.getElementById("output").innerHTML = model.path.getCppCode();
 }
 
 function handleMU(e) {
@@ -47,6 +65,9 @@ function handleMU(e) {
 function handleMM(e) {
   if (!mouseIsDown) return;
   let location = utilities.convertToModelCoords(e.offsetX, e.offsetY);
+  location.x = Math.round(location.x * 100) / 100;
+  location.y = Math.round(location.y * 100) / 100;
+  // console.log(location)
   if (movingPointIndex >= 0) {
     model.path.pathPoints[movingPointIndex].setLocation(location);
     setNumInputs(movingPointIndex, location);
@@ -59,6 +80,16 @@ function handleMM(e) {
       model.path.pathPoints[1].x - model.path.pathPoints[0].x
     );
   }
+  document.getElementById("output").innerHTML = model.path.getCppCode();
+}
+
+function handleWheel(e) {
+  // console.log(e);
+  model.FIELD_VIEW_SIZE += 0.1 * e.wheelDelta;
+  if (model.FIELD_VIEW_SIZE < model.FIELD_SIZE + 2 * model.FIELD_BORDER_SIZE) {
+    model.FIELD_VIEW_SIZE = model.FIELD_SIZE + 2 * model.FIELD_BORDER_SIZE;
+  }
+  view.drawBG();
 }
 
 function setNumInputs(pointIndex, location) {
@@ -89,7 +120,7 @@ function handleKD(e) {
       if (shiftIsUp) view.drawBG();
       shiftIsUp = false;
       break;
-    case "Enter":
+    case "KeyE":
       // model.robotController.isRunning = true;
       model.robot.isTrackingPosition = true;
       model.robotController.goToNextStop();
@@ -120,8 +151,78 @@ function addControlPoint(location) {
       : true,
     false
   );
+  console.log(pointControls);
+  pointControls.push(new PathPointControl(p, pointControls.length));
+  console.log(pointControls);
   model.path.pathPoints.push(p);
-  new PathPointControl(p);
 }
 
-export default {};
+function insertEmptyControlPoint(index) {
+  let p = makePathPoint(
+    utilities.point(0,0),
+    model.path.pathPoints.length
+      ? model.path.pathPoints[model.path.pathPoints.length - 1].isFwd
+      : true,
+    false
+  );
+  model.path.pathPoints = [
+    ...model.path.pathPoints.slice(0, index+1),
+    p,
+    ...model.path.pathPoints.slice(index+1)
+  ];
+  let pControl = new PathPointControl(p, index+1);
+  console.log(pointControls);
+  pointControls = [
+    ...pointControls.slice(0, index+1),
+    pControl,
+    ...pointControls.slice(index+1)
+  ];
+  console.log(pointControls);
+  for (let i = index+2; i < pointControls.length; ++i) {
+    ++(pointControls[i].index);
+  }
+  
+  pointControlContainer.insertBefore(pControl.controlBlock, pointControls[index+2].controlBlock);
+  
+}
+
+function handlePointControlBoxClick(e) {
+  // console.log(e);
+  for (let i = 0; i < pointControls.length - 1; ++i) {
+    if (e.clientY > pointControls[i].controlBlock.getBoundingClientRect().bottom &&
+      e.clientY < pointControls[i+1].controlBlock.getBoundingClientRect().top) {
+      insertEmptyControlPoint(i);
+    }
+  }
+}
+
+function handlePointControlBoxMove(e) {
+  // console.log(e);
+  let mouseBetween = false;
+  for (let i = 0; i < pointControls.length - 1; ++i) {
+    let boundingBoxTop = pointControls[i].controlBlock.getBoundingClientRect();
+    let boundingBoxBottom = pointControls[i+1].controlBlock.getBoundingClientRect();
+    if (e.clientY > boundingBoxTop.bottom &&
+      e.clientY < boundingBoxBottom.top) {
+        mouseBetween = true;
+        // if (!insertGraphic) {
+          // insertGraphic = document.createElement("div");
+          // pointControlContainer.appendChild(insertGraphic);
+          // insertGraphic.style.height = "0px";
+          // insertGraphic.style.width = `${boundingBoxTop.width}px`;
+          // insertGraphic.style.border = "1px solid red";
+          // insertGraphic.style.position = "absolute";
+          insertGraphic.style.display = "block";
+          insertGraphic.style.top = `${(boundingBoxTop.bottom + boundingBoxBottom.top) / 2}px`;
+        // }
+    }
+  }
+  if (!mouseBetween /*&& insertGraphic*/) {
+    // insertGraphic.remove();
+    insertGraphic.style.display = "none";
+    // insertGraphic = null;
+  }
+}
+
+
+export default { pointControls, removePointControl };

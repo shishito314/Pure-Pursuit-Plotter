@@ -1,13 +1,15 @@
 import model from "../model/model.mjs";
+import controller from "./controller.mjs";
 
 export default class PathPointControl {
-  constructor(pathPoint) {
+  constructor(pathPoint, index) {
     this.pathPoint = pathPoint;
+    this.index = index;
 
     // HTML Setup
-    let controlBlock = document.createElement("div");
-    controlBlock.className = "controlPointBlock";
-    document.getElementById("pointControlContainer").appendChild(controlBlock);
+    this.controlBlock = document.createElement("div");
+    this.controlBlock.className = "controlPointBlock";
+    document.getElementById("pointControlContainer").appendChild(this.controlBlock);
     let xInputBox = document.createElement("span");
     xInputBox.className = "controlPointInputBox";
     let xInputLabel = document.createElement("label");
@@ -19,7 +21,7 @@ export default class PathPointControl {
     this.xInput.value = this.pathPoint.x;
     xInputBox.appendChild(xInputLabel);
     xInputBox.appendChild(this.xInput);
-    controlBlock.appendChild(xInputBox);
+    this.controlBlock.appendChild(xInputBox);
     let yInputBox = document.createElement("span");
     yInputBox.className = "controlPointInputBox";
     let yInputLabel = document.createElement("label");
@@ -31,7 +33,7 @@ export default class PathPointControl {
     this.yInput.value = this.pathPoint.y;
     yInputBox.appendChild(yInputLabel);
     yInputBox.appendChild(this.yInput);
-    controlBlock.appendChild(yInputBox);
+    this.controlBlock.appendChild(yInputBox);
     let isFwdBox = document.createElement("span");
     isFwdBox.className = "controlPointInputBox";
     let isFwdLabel = document.createElement("label");
@@ -43,7 +45,7 @@ export default class PathPointControl {
     if (this.pathPoint.isFwd) this.isFwdButton.checked = "true";
     isFwdBox.appendChild(isFwdLabel);
     isFwdBox.appendChild(this.isFwdButton);
-    controlBlock.appendChild(isFwdBox);
+    this.controlBlock.appendChild(isFwdBox);
     let isStopBox = document.createElement("span");
     isStopBox.className = "controlPointInputBox";
     let isStopLabel = document.createElement("label");
@@ -55,17 +57,27 @@ export default class PathPointControl {
     if (this.pathPoint.isStop) this.isStopButton.checked = "true";
     isStopBox.appendChild(isStopLabel);
     isStopBox.appendChild(this.isStopButton);
-    controlBlock.appendChild(isStopBox);
+    this.controlBlock.appendChild(isStopBox);
     this.deleteButton = document.createElement("button");
     this.deleteButton.className = "deleteButton";
     this.deleteButton.innerHTML = "X";
-    controlBlock.appendChild(this.deleteButton);
+    this.controlBlock.appendChild(this.deleteButton);
     // End HTML Setup
 
     this.xInput.addEventListener("change", this.changeX.bind(this));
     this.yInput.addEventListener("change", this.changeY.bind(this));
     this.isFwdButton.addEventListener("click", this.changeFwd.bind(this));
     this.isStopButton.addEventListener("click", this.changeStop.bind(this));
+    this.deleteButton.addEventListener("click", this.deletePoint.bind(this));
+    // FOR DRAG AND DROP
+    // this.controlBlock.addEventListener("mousedown", () => {
+    //   this.controlBlock.style.position = "relative";
+    //   this.controlBlock.addEventListener("mousemove", this.changeOrder.bind(this));
+    // });
+    // this.controlBlock.addEventListener("mouseup", () => {
+    //   this.controlBlock.style.position = "static";
+    //   this.controlBlock.removeEventListener("mousemove", this.changeOrder.bind(this));
+    // });
   }
   changeX() {
     this.pathPoint.x = Number(this.xInput.value);
@@ -79,4 +91,21 @@ export default class PathPointControl {
   changeStop() {
     this.pathPoint.isStop = this.isStopButton.checked;
   }
+  deletePoint() {
+    model.path.pathPoints.splice(this.index, 1);
+    console.log(controller.pointControls);
+    controller.removePointControl(this.index);
+    // controller.pointControls.splice(this.index, 1);
+    console.log(controller.pointControls);
+    console.log(this.index);
+    for (let i = this.index; i < controller.pointControls.length; ++i) {
+      --(controller.pointControls[i].index);
+    }
+    this.controlBlock.remove();
+    delete this;
+  }
+  // FOR DRAG AND DROP
+  // changeOrder() {
+  //   this.controlBlock.style.translate = ""
+  // }
 }

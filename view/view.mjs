@@ -1,45 +1,34 @@
 import model from "../model/model.mjs";
 import utilities from "../utilities.mjs";
 
-const TOTAL_ASPECT_RATIO = 4 / 3;
-const CANVAS_BORDER_THICKNESS = 5;
-const CANVAS_SIZE_RATIO = 0.8;
+// const TOTAL_ASPECT_RATIO = 4 / 3;
+const CANVAS_BORDER_THICKNESS = 0;
+const CANVAS_SIZE_RATIO = 0.96;
 
 const bgCanvas = document.getElementById("bgCanvas");
 const fgCanvas = document.getElementById("fgCanvas");
 const bgContext = bgCanvas.getContext("2d");
 const fgContext = fgCanvas.getContext("2d");
-const sideBar = document.getElementById("sideBar");
+const sideBarLeft = document.getElementById("sideBarLeft");
 
 const bgImg = document.getElementById("fieldImage");
 
 function drawBG() {
   bgContext.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
-  let cornerBL = utilities.convertToCanvasCoords(0, 0);
-  let cornerTR = utilities.convertToCanvasCoords(
-    model.FIELD_SIZE,
-    model.FIELD_SIZE
-  );
   bgContext.drawImage(
     bgImg,
-    cornerBL.x,
-    cornerTR.y,
-    cornerTR.x - cornerBL.x,
-    cornerBL.y - cornerTR.y
+    bgCanvas.width * ((1 - model.FIELD_SIZE / model.FIELD_VIEW_SIZE) / 2 - model.FIELD_BORDER_SIZE / model.FIELD_VIEW_SIZE),
+    bgCanvas.width * ((1 - model.FIELD_SIZE / model.FIELD_VIEW_SIZE) / 2 - model.FIELD_BORDER_SIZE / model.FIELD_VIEW_SIZE),
+    bgCanvas.width * (model.FIELD_SIZE / model.FIELD_VIEW_SIZE + model.FIELD_BORDER_SIZE / model.FIELD_VIEW_SIZE * 2),
+    bgCanvas.width * (model.FIELD_SIZE / model.FIELD_VIEW_SIZE + model.FIELD_BORDER_SIZE / model.FIELD_VIEW_SIZE * 2)
   );
-  // for (let platform of model.platforms) {
-  //   platform.draw();
-  // }
-  // for (let ladder of model.ladders) {
-  //   ladder.draw();
-  // }
 }
 
 function drawFG() {
   fgContext.clearRect(0, 0, fgCanvas.width, fgCanvas.height);
-  model.robot.draw();
   model.path.draw();
   model.robotController.draw();
+  model.robot.draw();
   // for (let barrel of model.barrels) {
   //   barrel.draw();
   // }
@@ -84,11 +73,11 @@ function resize() {
   //   innerWidth - bgCanvas.width - 2 * CANVAS_BORDER_THICKNESS + "px";
   // bgCanvas.style.top =
   //   fgCanvas.style.top =
-  //   sideBar.style.top =
+  //   sideBarLeft.style.top =
   //     (innerHeight - bgCanvas.height) / 2 - CANVAS_BORDER_THICKNESS + "px";
-  // sideBar.style.width =
+  // sideBarLeft.style.width =
   //   innerWidth - bgCanvas.width - 2 * CANVAS_BORDER_THICKNESS + "px";
-  // sideBar.style.height = bgCanvas.height + 2 * CANVAS_BORDER_THICKNESS + "px";
+  // sideBarLeft.style.height = bgCanvas.height + 2 * CANVAS_BORDER_THICKNESS + "px";
   drawBG();
 }
 

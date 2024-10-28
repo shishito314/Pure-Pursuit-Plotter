@@ -16,7 +16,11 @@ export default class RobotPath {
       let p = utilities.convertPointToCanvasCoords(point);
       this.con.lineTo(p.x, p.y);
     }
+    this.con.strokeStyle = "darkGreen";
+    this.con.lineWidth = 3;
     this.con.stroke();
+    this.con.strokeStyle = "black";
+    this.con.lineWidth = 1;
     for (let point of this.pathPoints) {
       let p = utilities.convertPointToCanvasCoords(point);
       this.con.beginPath();
@@ -28,5 +32,23 @@ export default class RobotPath {
   }
   draw() {
     this.drawPathPoints();
+  }
+
+  getCppCode() {
+    let codeStr = "const PathPoint path[] = {<br>"
+    // console.log(this.pathPoints);
+    for (const i in this.pathPoints) {
+      const p = this.pathPoints[i];
+      // console.log(p);
+      codeStr += "&emsp;PathPoint("
+      codeStr += p.x + ", ";
+      codeStr += p.y + ", ";
+      codeStr += p.isFwd + ", ";
+      codeStr += p.isStop + "),<br>";
+    }
+    codeStr += "};<br><br>";
+    codeStr += "constexpr size_t numPathPoints{" + this.pathPoints.length + "};"
+
+    return codeStr;
   }
 }

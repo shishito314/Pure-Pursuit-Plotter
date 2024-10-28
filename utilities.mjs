@@ -1,4 +1,4 @@
-import model from "./model/model.mjs";
+import model, { FIELD_VIEW_SIZE } from "./model/model.mjs";
 import view from "./view/view.mjs";
 
 export function lerp(p1, p2, val) {
@@ -95,70 +95,32 @@ export function solveQuadratic(a, b, c) {
 // }
 
 export function convertPointToModelCoords(p) {
-  if (model.isZoomedOut) {
-    return point(
-      (p.x / view.bgCanvas.width) * model.ZOOM_OUT_SIZE -
-        (model.ZOOM_OUT_SIZE - model.FIELD_SIZE) / 2,
-      (1 - p.y / view.bgCanvas.width) * model.ZOOM_OUT_SIZE -
-        (model.ZOOM_OUT_SIZE - model.FIELD_SIZE) / 2
-    );
-  } else
-    return point(
-      (p.x / view.bgCanvas.width) * model.FIELD_SIZE,
-      (1 - p.y / view.bgCanvas.width) * model.FIELD_SIZE
-    );
+  return point(
+    (p.x * model.FIELD_VIEW_SIZE / view.bgCanvas.width) - (model.FIELD_VIEW_SIZE - model.FIELD_SIZE) / 2,
+    ((view.bgCanvas.width - p.y) * model.FIELD_VIEW_SIZE / view.bgCanvas.width) - (model.FIELD_VIEW_SIZE - model.FIELD_SIZE) / 2,
+  );
 }
 
 export function convertToModelCoords(x, y) {
-  if (model.isZoomedOut) {
-    return point(
-      (x / view.bgCanvas.width) * model.ZOOM_OUT_SIZE -
-        (model.ZOOM_OUT_SIZE - model.FIELD_SIZE) / 2,
-      (1 - y / view.bgCanvas.width) * model.ZOOM_OUT_SIZE -
-        (model.ZOOM_OUT_SIZE - model.FIELD_SIZE) / 2
-    );
-  } else
-    return point(
-      (x / view.bgCanvas.width) * model.FIELD_SIZE,
-      (1 - y / view.bgCanvas.width) * model.FIELD_SIZE
-    );
+  return point(
+    (x * model.FIELD_VIEW_SIZE / view.bgCanvas.width) - (model.FIELD_VIEW_SIZE - model.FIELD_SIZE) / 2,
+    ((view.bgCanvas.width - y) * model.FIELD_VIEW_SIZE / view.bgCanvas.width) - (model.FIELD_VIEW_SIZE - model.FIELD_SIZE) / 2,
+  );
 }
 
 export function convertPointToCanvasCoords(p) {
-  if (model.isZoomedOut) {
-    return point(
-      (p.x / model.ZOOM_OUT_SIZE +
-        0.5 * (1 - model.FIELD_SIZE / model.ZOOM_OUT_SIZE)) *
-        view.bgCanvas.width,
-      (1 -
-        (p.y / model.ZOOM_OUT_SIZE +
-          0.5 * (1 - model.FIELD_SIZE / model.ZOOM_OUT_SIZE))) *
-        view.bgCanvas.width
-    );
-  } else
-    return {
-      x: (p.x / model.FIELD_SIZE) * view.bgCanvas.width,
-      y: (1 - p.y / model.FIELD_SIZE) * view.bgCanvas.width,
-    };
+  return point(
+    ((model.FIELD_VIEW_SIZE - model.FIELD_SIZE) / 2 + p.x) * view.bgCanvas.width / model.FIELD_VIEW_SIZE,
+    ((model.FIELD_VIEW_SIZE - model.FIELD_SIZE) / 2 + (model.FIELD_SIZE - p.y)) * view.bgCanvas.width / model.FIELD_VIEW_SIZE,
+  );
   // interchangeable bgCanvas or fgCanvas, width or height
 }
 
 export function convertToCanvasCoords(x, y) {
-  if (model.isZoomedOut) {
-    return point(
-      (x / model.ZOOM_OUT_SIZE +
-        0.5 * (1 - model.FIELD_SIZE / model.ZOOM_OUT_SIZE)) *
-        view.bgCanvas.width,
-      (1 -
-        (y / model.ZOOM_OUT_SIZE +
-          0.5 * (1 - model.FIELD_SIZE / model.ZOOM_OUT_SIZE))) *
-        view.bgCanvas.width
-    );
-  } else
-    return {
-      x: (x / model.FIELD_SIZE) * view.bgCanvas.width,
-      y: (1 - y / model.FIELD_SIZE) * view.bgCanvas.width,
-    };
+  return point(
+    ((model.FIELD_VIEW_SIZE - model.FIELD_SIZE) / 2 + x) * view.bgCanvas.width / model.FIELD_VIEW_SIZE,
+    ((model.FIELD_VIEW_SIZE - model.FIELD_SIZE) / 2 + (model.FIELD_SIZE - y)) * view.bgCanvas.width / model.FIELD_VIEW_SIZE,
+  );
   // interchangeable bgCanvas or fgCanvas, width or height
 }
 

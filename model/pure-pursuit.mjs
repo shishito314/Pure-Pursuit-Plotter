@@ -132,7 +132,7 @@ export default class PurePursuitController {
       let viewPosLogPoint = utilities.convertPointToCanvasCoords(this.logPoint);
       this.con.beginPath();
       this.con.arc(viewPosLogPoint.x, viewPosLogPoint.y, 5, 0, 2 * Math.PI);
-      this.con.fillStyle = "green";
+      this.con.fillStyle = "#00ffff";
       this.con.fill();
       this.con.fillStyle = "black";
     }

@@ -96,6 +96,7 @@ export default class Robot extends Sprite {
     super.draw();
     if (!this.track.length) return;
     this.con.strokeStyle = "red";
+    this.con.lineWidth = 3;
     this.con.beginPath(); // for debugging and logging
     let start = utilities.convertPointToCanvasCoords(this.track[0]);
     // console.log(this.track[0]);
@@ -108,5 +109,6 @@ export default class Robot extends Sprite {
     }
     this.con.stroke();
     this.con.strokeStyle = "black";
+    this.con.lineWidth = 1;
   }
 }

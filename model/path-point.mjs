@@ -1,4 +1,4 @@
-import utilities from "../utilities.mjs";
+// import utilities from "../utilities.mjs";
 
 export class PathPoint {
   constructor(x, y, isFwd, isStop) {

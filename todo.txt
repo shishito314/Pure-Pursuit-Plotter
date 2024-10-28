@@ -6,3 +6,8 @@ slaying the dragon css
 
 
 slewStartPID
+
+
+slew rate start
+PID end
+speed control

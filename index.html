@@ -9,13 +9,12 @@
     <script type="module" src="app.mjs"></script>
   </head>
   <body>
-    <header id="pageTitle">25600X - Pure Pursuit Path Generator</header>
     <div id="mainContainer">
-      <div id="sideBar">
+      <div id="sideBarLeft">
+        <header id="pageTitle">25600X - Pure Pursuit Path Generator</header>
         <div id="controlBar">
-          <div id="controlButtonsContainer">
-            <button class="controlButton">Copy To Clipboard</button>
-          </div>
+          <!-- <div id="controlButtonsContainer">
+          </div> -->
           <div id="programSelector" class="tab">
             <button>Path 1</button>
             <!-- <button>Auton 2</button>
@@ -29,11 +28,17 @@
 
         <div id="pointControlContainer">
           <header class="sectionHeader">Control Points</header>
+          <div id="insertGraphic"></div>
         </div>
       </div>
       <div id="eisel">
         <canvas id="bgCanvas"></canvas>
         <canvas id="fgCanvas"></canvas>
+        <!-- <div id="scrollDetector"></div> -->
+      </div>
+      <div id="sideBarRight">
+        <button id="clipboardButton">Copy To Clipboard</button>
+        <p id="output"></p>
       </div>
     </div>
     <img src="./images/robot-image.svg" id="robotImage" />
