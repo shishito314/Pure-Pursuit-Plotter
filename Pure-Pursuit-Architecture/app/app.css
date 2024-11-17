@@ -1,0 +1,29 @@
+body,
+html {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background-color: antiquewhite;
+}
+
+.app {
+  display: grid;
+  grid-template-columns: min(20em) auto min(15em);
+  height: 100%;
+}
+
+.dataPanel {
+  background-color: red;
+}
+
+.graphicPanel {
+  background-color: green;
+}
+
+.outputPanel {
+  background-color: blue;
+}
