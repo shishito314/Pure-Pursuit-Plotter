@@ -1,4 +1,8 @@
+import Robotics_code from "../components/robotics_code/robotics_code.mjs";
+import Robotics_data from "../components/robotics_data/robotics_data.mjs";
+import Robotics_footer from "../components/robotics_footer/robotics_footer.mjs";
 import Robotics_graphics from "../components/robotics_graphics/robotics_graphics.mjs";
+import Robotics_menu from "../components/robotics_menu/robotics_menu.mjs";
 import create_element from "../utilities/methods/create_element.mjs";
 import link_favicon from "../utilities/methods/link_favicon.mjs";
 import link_styles from "../utilities/methods/link_styles.mjs";
@@ -17,7 +21,11 @@ export default class Spapp_view {
   }
   construct_components() {
     this.components = {
+      menu: new Robotics_menu({ parent: this.top_menu }),
+      data: new Robotics_data({ parent: this.left_panel, spapp: this.parent }),
       graphics: new Robotics_graphics({ parent: this.center_panel }),
+      code: new Robotics_code({ parent: this.right_panel }),
+      footer: new Robotics_footer({ parent: this.footer }),
     };
   }
   construct_grid() {

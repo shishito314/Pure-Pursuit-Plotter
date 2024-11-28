@@ -21,4 +21,7 @@ export default class Robotics_graphics {
     this.top_canvas = new Maximal_square_canvas({ parent: this.container });
     this.parent.appendChild(this.container);
   }
+  update() {
+    // TODO
+  }
 }

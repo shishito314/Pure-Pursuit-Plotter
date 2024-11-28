@@ -1,0 +1,17 @@
+.menu_button {
+  border-radius: 0.5em;
+  margin-left: 0.5em;
+  margin-top: 0.1em;
+  margin-bottom: 0.2em;
+  font-size: 1em;
+  border: none;
+  background-color: rgb(181, 193, 206);
+  cursor: pointer;
+  color: rgb(19, 88, 156);
+  transition-duration: 0.4s;
+}
+
+.menu_button:hover {
+  background-color: rgb(104, 122, 144);
+  color: rgb(156, 177, 197);
+}
