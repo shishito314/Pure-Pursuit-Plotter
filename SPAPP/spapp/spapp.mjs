@@ -7,6 +7,5 @@ export default class Spapp {
     this.model = new Spapp_model({ parent: this });
     this.view = new Spapp_view({ parent: this });
     this.controller = new Spapp_controller({ parent: this });
-    // TODO
   }
 }

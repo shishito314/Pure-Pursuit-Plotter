@@ -23,7 +23,10 @@ export default class Spapp_view {
     this.components = {
       menu: new Robotics_menu({ parent: this.top_menu }),
       data: new Robotics_data({ parent: this.left_panel, spapp: this.parent }),
-      graphics: new Robotics_graphics({ parent: this.center_panel }),
+      graphics: new Robotics_graphics({
+        parent: this.center_panel,
+        spapp: this.parent,
+      }),
       code: new Robotics_code({ parent: this.right_panel }),
       footer: new Robotics_footer({ parent: this.footer }),
     };
