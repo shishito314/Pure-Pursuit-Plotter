@@ -23,7 +23,7 @@ export default class Robotics_graphics {
     this.parent.appendChild(this.container);
   }
   update() {
-    console.log(this.top_canvas.context);
+    // setTimeout(() => this.update(), 100); // WHY?
     // Clear canvases
     // this.bottom_canvas.context.clearRect(
     //   0,

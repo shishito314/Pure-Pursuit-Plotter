@@ -11,6 +11,7 @@ export default class Sprite {
     this.dim = { x: dimX, y: dimY };
   }
   draw(context) {
+    if (!this.image) return;
     let viewPos = this.spapp.model.convert_point_to_canvas_coords(this.pos);
     context.translate(viewPos.x, viewPos.y);
     context.rotate(-this.angle); // bc of clockwise rotation

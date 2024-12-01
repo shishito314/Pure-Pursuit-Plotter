@@ -1,5 +1,6 @@
 import Path_point from "../model/path_point.mjs";
 import { dist } from "../utilities/methods/math.mjs";
+import observe_resizing from "../utilities/methods/observe_resizing.mjs";
 
 const MOVE_THRESHOLD = 2;
 
@@ -8,6 +9,11 @@ export default class Spapp_controller {
     console.log("Spapp_controller()");
     this.parent = parent;
     this.view_components = this.parent.view.components;
+
+    this.resize_observer = observe_resizing({
+      parent: this.view_components.graphics.container,
+      callback: this.handle_resize.bind(this),
+    });
 
     this.view_components.menu.button_random_mixed.button.addEventListener(
       "click",
@@ -76,6 +82,10 @@ export default class Spapp_controller {
   handle_graphics_MU(e) {
     this.moving_point = undefined;
     this.mouse_is_down = false;
+  }
+
+  handle_resize(e) {
+    this.view_components.graphics.update();
   }
   // Model Interfacing Functions
   pause() {}
