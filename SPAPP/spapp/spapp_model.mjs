@@ -1,4 +1,6 @@
 import { FIELD_SIZE } from "../model/config.mjs";
+import Pure_pursuit_controller from "../model/pure_pursuit.mjs";
+import Robot_path from "../model/robot_path.mjs";
 import Robot from "../model/sprite/robot.mjs";
 
 const ROBOT_SIZE = 15;
@@ -8,7 +10,7 @@ export default class Spapp_model {
     console.log("Spapp_model()");
     this.parent = parent;
     this.field_view_size = FIELD_SIZE;
-    this.path = [];
+    this.path = new Robot_path(this.parent);
     this.robot = new Robot(
       this.parent,
       FIELD_SIZE / 2,
@@ -18,9 +20,16 @@ export default class Spapp_model {
       ROBOT_SIZE,
       15
     );
+    this.robot_controller= new Pure_pursuit_controller(this.parent, this.robot, this.path);
   }
+  animate(time_change) {
+    this.robot.update(time_change);
+    this.robot_controller.update();
+  }
+
+  // Controller interfacing functions
   add_data_point(point) {
-    this.path.push(point);
+    this.path.path_points.push(point);
   }
   change_data_point(point, { x, y, is_fwd, is_stop }) {
     if (x) point.x = x;
@@ -28,6 +37,22 @@ export default class Spapp_model {
     if (is_fwd) point.is_fwd = is_fwd;
     if (is_stop) point.is_stop = is_stop;
   }
+  reset_robot() {
+    this.robot.pos.x = this.path.path_points[0].x;
+    this.robot.pos.y = this.path.path_points[0].y;
+    this.robot.vel.l = 0;
+    this.robot.vel.r = 0;
+    this.robot.angle = -Math.atan2(
+      this.path.path_points[0].y - this.path.path_points[1].y,
+      this.path.path_points[1].x - this.path.path_points[0].x
+    );
+    this.robot.track = [];
+    this.robot_controller.is_running = false;
+    this.robot_controller.last_found_index = 0;
+    this.parent.is_running = false;
+    this.robot.isTrackingPosition = false;
+  }
+
   // conversion utilities
 
   // TODO: sanity check for canvas existence

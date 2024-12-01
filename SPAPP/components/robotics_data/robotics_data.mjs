@@ -26,7 +26,7 @@ export default class Robotics_data {
       this.container.removeChild(this.container.firstChild);
     }
     this.data_points = [];
-    for (const d of this.spapp.model.path) {
+    for (const d of this.spapp.model.path.path_points) {
       const { x, y } = d;
       this.data_points.push(
         new Robotics_data_point({ parent: this.container, x, y })

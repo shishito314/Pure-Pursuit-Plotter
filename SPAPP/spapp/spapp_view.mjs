@@ -19,6 +19,9 @@ export default class Spapp_view {
     this.construct_grid();
     this.construct_components();
   }
+  animate() {
+    this.components.graphics.animate();
+  }
   construct_components() {
     this.components = {
       menu: new Robotics_menu({ parent: this.top_menu }),

@@ -8,12 +8,12 @@ export function dist(p1, p2) {
   );
 }
 
-export function angleRangeZeroToTwoPi(angle) {
+export function angle_range_zero_to_two_pi(angle) {
   // there's probably a better way to do this
   return angle - Math.floor(angle / 2 / Math.PI) * 2 * Math.PI;
 }
 
-export function angleRangePNPi(angle) {
+export function angle_range_pn_pi(angle) {
   // there's probably a better way to do this
   return angle - Math.floor((angle + Math.PI) / (2 * Math.PI)) * (2 * Math.PI);
 }
@@ -90,8 +90,8 @@ export function solveQuadratic(a, b, c) {
 export default {
   lerp,
   dist,
-  angleRangeZeroToTwoPi,
-  angleRangePNPi,
+  angle_range_zero_to_two_pi,
+  angle_range_pn_pi,
   getBezierPoint,
   circleLineIntersect,
   boundedCircleLineIntersect,

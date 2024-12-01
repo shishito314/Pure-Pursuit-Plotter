@@ -10,16 +10,19 @@ export default class Spapp_controller {
     this.parent = parent;
     this.view_components = this.parent.view.components;
 
+    // Resize
     this.resize_observer = observe_resizing({
       parent: this.view_components.graphics.container,
       callback: this.handle_resize.bind(this),
     });
 
+    // Menu Buttons
     this.view_components.menu.button_random_mixed.button.addEventListener(
       "click",
       this.add_random_data_point.bind(this)
     );
 
+    // Graphics Mouse Controls
     this.view_components.graphics.top_canvas.canvas.addEventListener(
       "mousedown",
       this.handle_graphics_MD.bind(this)
@@ -34,6 +37,10 @@ export default class Spapp_controller {
     );
     this.mouse_is_down = false;
     this.moving_point;
+
+    // Keyboard
+    document.addEventListener("keydown", this.handleKD.bind(this));
+    document.addEventListener("keyup", this.handleKU.bind(this));
   }
   // Event Handling Functions
   // NOTE: These might cause regenerations more than necessary by calling
@@ -54,7 +61,7 @@ export default class Spapp_controller {
     loc.x = Math.round(loc.x * 100) / 100;
     loc.y = Math.round(loc.y * 100) / 100;
     let moving = false;
-    for (const p of this.parent.model.path) {
+    for (const p of this.parent.model.path.path_points) {
       if (dist(p, loc) < MOVE_THRESHOLD) {
         // TODO: base off of canvas coordinates instead of model ones
         this.moving_point = p;
@@ -84,14 +91,40 @@ export default class Spapp_controller {
     this.mouse_is_down = false;
   }
 
+  handleKD(e) {
+    switch (e.code) {
+      case "KeyR":
+        this.reset()
+        break;
+      case "KeyE":
+        this.start()
+        break;
+      // todo: control z
+    }
+  }
+
+  handleKU(e) {
+    // TODO: control z/y
+  }
+
   handle_resize(e) {
     this.view_components.graphics.update();
   }
   // Model Interfacing Functions
   pause() {}
-  play() {}
+  // play() {}
+  reset() {
+    this.parent.model.reset_robot();
+    this.view_components.graphics.update();
+    this.view_components.data.unshow_overlay();
+  }
   start() {
-    // TODO: lock out
+    this.parent.is_running = true;
+    requestAnimationFrame(this.parent.animate.bind(this.parent));
+    this.parent.model.robot.isTrackingPosition = true;
+    this.parent.model.robot_controller.go_to_next_stop();
+    // Lock out side panel
+    this.view_components.data.show_overlay();
   }
   add_data_point(point) {
     this.parent.model.add_data_point(point);
@@ -106,4 +139,6 @@ export default class Spapp_controller {
     this.view_components.graphics.update();
     this.view_components.data.update();
   }
+
+// Animation functions
 }

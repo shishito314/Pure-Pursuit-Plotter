@@ -1,5 +1,6 @@
 import create_element from "../../utilities/methods/create_element.mjs";
 import Robotics_data_component from "./robotics_data_component.mjs";
+import Robotics_data_component_bool from "./robotics_data_component_bool.mjs";
 
 export default class Robotics_data_point {
   constructor({ parent, x, y }) {
@@ -18,6 +19,14 @@ export default class Robotics_data_point {
       parent: this.container,
       value: y,
       step: 0.01,
+    });
+    this.is_fwd_component = new Robotics_data_component_bool({
+      parent: this.container,
+      checked: true // TODO: Edit later
+    });
+    this.is_stop_component = new Robotics_data_component_bool({
+      parent: this.container,
+      checked: true // TODO: Edit later
     });
   }
 }

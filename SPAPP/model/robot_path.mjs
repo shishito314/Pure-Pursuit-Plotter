@@ -1,38 +1,35 @@
-// import utilities from "../utilities.mjs";
-// import view from "../view/view.mjs";
 
-// export default class RobotPath {
-//   constructor() {
-//     this.can = view.fgCanvas;
-//     this.con = view.fgContext;
-//     this.pathPoints = [];
-//   }
-//   drawPathPoints() {
-//     if (!this.pathPoints.length) return;
-//     this.con.beginPath();
-//     let start = utilities.convertPointToCanvasCoords(this.pathPoints[0]);
-//     this.con.moveTo(start.x, start.y);
-//     for (let point of this.pathPoints) {
-//       let p = utilities.convertPointToCanvasCoords(point);
-//       this.con.lineTo(p.x, p.y);
-//     }
-//     this.con.strokeStyle = "darkGreen";
-//     this.con.lineWidth = 3;
-//     this.con.stroke();
-//     this.con.strokeStyle = "black";
-//     this.con.lineWidth = 1;
-//     for (let point of this.pathPoints) {
-//       let p = utilities.convertPointToCanvasCoords(point);
-//       this.con.beginPath();
-//       this.con.arc(p.x, p.y, 5, 0, 2 * Math.PI);
-//       this.con.fillStyle = "white";
-//       this.con.fill();
-//       this.con.fillStyle = "black";
-//     }
-//   }
-//   draw() {
-//     this.drawPathPoints();
-//   }
+export default class Robot_path {
+  constructor(spapp) {
+    this.spapp = spapp;
+    this.path_points = [];
+  }
+  draw(context) {
+    if (this.path_points.length) {
+      context.beginPath();
+      let start = this.spapp.model.convert_point_to_canvas_coords(
+        this.path_points[0]
+      );
+      context.moveTo(start.x, start.y);
+      for (let point of this.path_points) {
+        let p = this.spapp.model.convert_point_to_canvas_coords(point);
+        context.lineTo(p.x, p.y);
+      }
+      context.strokeStyle = "darkGreen";
+      context.lineWidth = 3;
+      context.stroke();
+      context.strokeStyle = "black";
+      context.lineWidth = 1;
+      for (let point of this.path_points) {
+        let p = this.spapp.model.convert_point_to_canvas_coords(point);
+        context.beginPath();
+        context.arc(p.x, p.y, 5, 0, 2 * Math.PI);
+        context.fillStyle = "white";
+        context.fill();
+        context.fillStyle = "black";
+      }
+    }
+  }
 
 //   getCppCode() {
 //     let codeStr = "const PathPoint path[] = {<br>"
@@ -51,4 +48,4 @@
 
 //     return codeStr;
 //   }
-// }
+}
