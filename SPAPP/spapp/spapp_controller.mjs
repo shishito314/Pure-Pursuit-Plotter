@@ -1,3 +1,4 @@
+import { FIELD_SIZE } from "../model/config.mjs";
 import Path_point from "../model/path_point.mjs";
 import { dist } from "../utilities/methods/math.mjs";
 import observe_resizing from "../utilities/methods/observe_resizing.mjs";
@@ -35,12 +36,17 @@ export default class Spapp_controller {
       "mousemove",
       this.handle_graphics_MM.bind(this)
     );
+    this.view_components.graphics.top_canvas.canvas.addEventListener(
+      "mousewheel",
+      this.handle_graphics_MW.bind(this)
+    );
     this.mouse_is_down = false;
     this.moving_point;
 
     // Keyboard
     document.addEventListener("keydown", this.handleKD.bind(this));
     document.addEventListener("keyup", this.handleKU.bind(this));
+
   }
   // Event Handling Functions
   // NOTE: These might cause regenerations more than necessary by calling
@@ -55,6 +61,7 @@ export default class Spapp_controller {
       })
     );
   }
+
   handle_graphics_MD(e) {
     this.mouse_is_down = true;
     let loc = this.parent.model.convert_to_model_coords(e.offsetX, e.offsetY);
@@ -90,6 +97,15 @@ export default class Spapp_controller {
     this.moving_point = undefined;
     this.mouse_is_down = false;
   }
+  handle_graphics_MW(e) {
+    // console.log(e);
+    this.parent.model.field_view_size += 0.1 * e.wheelDelta;
+    if (this.parent.model.field_view_size < FIELD_SIZE) {
+      this.parent.model.field_view_size = FIELD_SIZE;
+    }
+    this.view_components.graphics.update();
+    // TODO: resize background
+  }
 
   handleKD(e) {
     switch (e.code) {
@@ -102,7 +118,6 @@ export default class Spapp_controller {
       // todo: control z
     }
   }
-
   handleKU(e) {
     // TODO: control z/y
   }
@@ -119,12 +134,14 @@ export default class Spapp_controller {
     this.view_components.data.unshow_overlay();
   }
   start() {
-    this.parent.is_running = true;
-    requestAnimationFrame(this.parent.animate.bind(this.parent));
-    this.parent.model.robot.isTrackingPosition = true;
-    this.parent.model.robot_controller.go_to_next_stop();
-    // Lock out side panel
-    this.view_components.data.show_overlay();
+    if (!this.parent.is_running) {
+      this.parent.is_running = true;
+      requestAnimationFrame(this.parent.animate.bind(this.parent));
+      this.parent.model.robot.isTrackingPosition = true;
+      this.parent.model.robot_controller.go_to_next_stop();
+      // Lock out side panel
+      this.view_components.data.show_overlay();
+    }
   }
   add_data_point(point) {
     this.parent.model.add_data_point(point);
