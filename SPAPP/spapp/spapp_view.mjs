@@ -24,14 +24,14 @@ export default class Spapp_view {
   }
   construct_components() {
     this.components = {
-      menu: new Robotics_menu({ parent: this.top_menu }),
+      menu: new Robotics_menu({ parent: this.top_menu, spapp: this.parent }),
       data: new Robotics_data({ parent: this.left_panel, spapp: this.parent }),
       graphics: new Robotics_graphics({
         parent: this.center_panel,
         spapp: this.parent,
       }),
-      code: new Robotics_code({ parent: this.right_panel }),
-      footer: new Robotics_footer({ parent: this.footer }),
+      code: new Robotics_code({ parent: this.right_panel, spapp: this.parent }),
+      footer: new Robotics_footer({ parent: this.footer, spapp: this.parent }),
     };
   }
   construct_grid() {

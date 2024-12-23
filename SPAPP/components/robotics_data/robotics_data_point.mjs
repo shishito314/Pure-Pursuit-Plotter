@@ -1,9 +1,10 @@
 import create_element from "../../utilities/methods/create_element.mjs";
 import Robotics_data_component from "./robotics_data_component.mjs";
 import Robotics_data_component_bool from "./robotics_data_component_bool.mjs";
+import Robotics_data_component_delete from "./robotics_data_component_delete.mjs";
 
 export default class Robotics_data_point {
-  constructor({ parent, spapp, data_point_index, x, y }) {
+  constructor({ parent, spapp, data_point_index, x, y, is_fwd, is_stop }) {
     this.parent = parent;
     this.spapp = spapp;
     this.data_point_index = data_point_index;
@@ -33,14 +34,19 @@ export default class Robotics_data_point {
       spapp: this.spapp,
       id: "is_fwd",
       data_point_index,
-      checked: true, // TODO: Edit later
+      checked: is_fwd,
     });
     this.is_stop_component = new Robotics_data_component_bool({
       parent: this.container,
       spapp: this.spapp,
       id: "is_stop",
       data_point_index,
-      checked: false, // TODO: Edit later
+      checked: is_stop,
+    });
+    this.delete_component = new Robotics_data_component_delete({
+      parent: this.container,
+      spapp: this.spapp,
+      data_point_index,
     });
   }
 }

@@ -1,6 +1,6 @@
 import Sprite from "./sprite.mjs";
 
-const VEL_MAX = 0.075;
+const VEL_MAX = 0.020625 * Math.PI;
 const PATH_TO_IMAGE = "assets/robot-image2.svg";
 
 export default class Robot extends Sprite {

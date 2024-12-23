@@ -27,7 +27,7 @@ export default class Robotics_data {
     }
     this.data_points = [];
     for (const d of this.spapp.model.path.path_points) {
-      const { x, y } = d;
+      const { x, y, is_fwd, is_stop } = d;
       this.data_points.push(
         new Robotics_data_point({
           parent: this.container,
@@ -35,6 +35,8 @@ export default class Robotics_data {
           data_point_index: this.data_points.length,
           x,
           y,
+          is_fwd,
+          is_stop
         })
       );
     }

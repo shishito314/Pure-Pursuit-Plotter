@@ -44,6 +44,9 @@ export default class Spapp_model {
   change_data_point_by_index(index, id, value) {
     this.path.path_points[index][id] = value;
   }
+  delete_data_point_by_index(index) {
+    this.path.path_points.splice(index, 1);
+  }
   reset_robot() {
     this.robot.pos.x = this.path.path_points[0].x;
     this.robot.pos.y = this.path.path_points[0].y;
@@ -53,6 +56,7 @@ export default class Spapp_model {
       this.path.path_points[0].y - this.path.path_points[1].y,
       this.path.path_points[1].x - this.path.path_points[0].x
     );
+    if (!this.path.path_points[0].is_fwd) this.robot.angle += Math.PI;
     this.robot.track = [];
     this.robot_controller.is_running = false;
     this.robot_controller.last_found_index = 0;

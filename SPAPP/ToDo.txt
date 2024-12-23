@@ -1,8 +1,16 @@
+TODO:
 deactivate canvas clicks while running
+tool-tip hints or labels for data members
+code copy/download (saving paths)
+rearranging points
+bezier control
+
+MAYBE:
+menu for selecting paths
+touch events
+
+DONE:
 code output
 footer x-y hover coordinates
-tool-tip hints or labels for data members
-menu for selecting paths
-saving paths
-
-touch events???
+zoom controls
+deleting points

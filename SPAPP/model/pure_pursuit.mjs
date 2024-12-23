@@ -41,7 +41,7 @@ export default class Pure_pursuit_controller {
         // ) {
         // }
         if (i != this.last_found_index) {
-          if (this.path.path_points[this.last_found_index + 1].isStop) {
+          if (this.path.path_points[this.last_found_index + 1].is_stop) {
             if (
               dist(this.robot.pos, this.path.path_points[i]) >
               STOP_TOLERANCE

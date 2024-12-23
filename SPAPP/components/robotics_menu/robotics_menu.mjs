@@ -23,45 +23,58 @@ export default class Robotics_menu {
     this.parent.appendChild(this.container);
   }
   create_buttons() {
-    this.buttom_home_icon = new Menu_button({
-      parent: this.container,
-      icon_classes: ["fa", "fa-home"],
-      styles: { order: 2 },
-    });
-    this.buttom_home_text = new Menu_button({
-      parent: this.container,
-      text: "home",
-      styles: { order: 3 },
-    });
-    this.buttom_home_mixed = new Menu_button({
-      parent: this.container,
-      icon_classes: ["fa", "fa-home"],
-      text: " home",
-      styles: { order: 4 },
-    });
+    // this.buttom_home_icon = new Menu_button({
+    //   parent: this.container,
+    //   icon_classes: ["fa", "fa-home"],
+    //   styles: { order: 2 },
+    // });
+    // this.buttom_home_text = new Menu_button({
+    //   parent: this.container,
+    //   text: "home",
+    //   styles: { order: 3 },
+    // });
+    // this.buttom_home_mixed = new Menu_button({
+    //   parent: this.container,
+    //   icon_classes: ["fa", "fa-home"],
+    //   text: " home",
+    //   styles: { order: 4 },
+    // });
     this.buttom_play_mixed = new Menu_button({
       parent: this.container,
       icon_classes: ["fa", "fa-play-circle"],
-      text: " play",
+      text: " Play",
       styles: { order: 5 },
     });
     this.buttom_pause_mixed = new Menu_button({
       parent: this.container,
       icon_classes: ["fa", "fa-pause-circle"],
-      text: " pause",
+      text: " Pause",
       styles: { order: 6 },
     });
     this.buttom_stop_mixed = new Menu_button({
       parent: this.container,
       icon_classes: ["fa", "fa-stop-circle"],
-      text: " stop",
+      text: " Stop",
       styles: { order: 7 },
     });
-    this.button_random_mixed = new Menu_button({
+    this.buttom_import_mixed = new Menu_button({
       parent: this.container,
-      // icon_classes: ["fa", "fa-stop-circle"],
-      text: " Add random data",
+      icon_classes: ["fa", "fa-download"],
+      text: " Import",
       styles: { order: 8 },
     });
+    this.buttom_export_mixed = new Menu_button({
+      parent: this.container,
+      icon_classes: ["fa", "fa-upload"],
+      text: " Export",
+      styles: { order: 9 },
+    });
+
+    // this.button_random_mixed = new Menu_button({
+    //   parent: this.container,
+    //   // icon_classes: ["fa", "fa-stop-circle"],
+    //   text: " Add random data",
+    //   styles: { order: 8 },
+    // });
   }
 }

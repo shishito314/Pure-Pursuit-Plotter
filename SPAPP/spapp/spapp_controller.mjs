@@ -18,10 +18,13 @@ export default class Spapp_controller {
     });
 
     // Menu Buttons
-    this.view_components.menu.button_random_mixed.button.addEventListener(
-      "click",
-      this.add_random_data_point.bind(this)
-    );
+    // this.view_components.menu.button_random_mixed.button.addEventListener(
+    //   "click",
+    //   this.add_random_data_point.bind(this)
+    // );
+    this.view_components.menu.buttom_play_mixed.button.addEventListener("click", this.start.bind(this));
+    this.view_components.menu.buttom_pause_mixed.button.addEventListener("click", this.pause.bind(this));
+    this.view_components.menu.buttom_stop_mixed.button.addEventListener("click", this.reset.bind(this));
 
     // Graphics Mouse Controls
     this.view_components.graphics.top_canvas.canvas.addEventListener(
@@ -83,8 +86,9 @@ export default class Spapp_controller {
     // TODO: starting path logic
   }
   handle_graphics_MM(e) {
-    if (!this.mouse_is_down) return;
     let loc = this.parent.model.convert_to_model_coords(e.offsetX, e.offsetY);
+    this.view_components.footer.update(loc);
+    if (!this.mouse_is_down) return;
     loc.x = Math.round(loc.x * 100) / 100;
     loc.y = Math.round(loc.y * 100) / 100;
     if (this.moving_point) {
@@ -128,10 +132,20 @@ export default class Spapp_controller {
   handle_data_component_change(data_point_index, id, value) {
     this.parent.model.change_data_point_by_index(data_point_index, id, value);
     this.view_components.graphics.update();
+    this.view_components.code.update();
+  }
+  handle_data_component_delete(data_point_index) {
+    this.parent.model.delete_data_point_by_index(data_point_index);
+    this.view_components.data.update();
+    this.view_components.graphics.update();
+    this.view_components.code.update();
   }
 
   // Model Interfacing Functions
-  pause() {}
+  pause() {
+    this.parent.model.robot_controller.is_running = false;
+    this.parent.is_running = false;
+  }
   // play() {}
   reset() {
     this.parent.model.reset_robot();
@@ -143,15 +157,16 @@ export default class Spapp_controller {
       this.parent.is_running = true;
       requestAnimationFrame(this.parent.animate.bind(this.parent));
       this.parent.model.robot.isTrackingPosition = true;
-      this.parent.model.robot_controller.go_to_next_stop();
       // Lock out side panel
       this.view_components.data.show_overlay();
     }
+    this.parent.model.robot_controller.go_to_next_stop();
   }
   add_data_point(point) {
     this.parent.model.add_data_point(point);
     this.view_components.graphics.update();
     this.view_components.data.update();
+    this.view_components.code.update();
   }
   delete_data_point() {}
   insert_data_point() {}
@@ -160,6 +175,7 @@ export default class Spapp_controller {
     this.parent.model.change_data_point(point, new_props);
     this.view_components.graphics.update();
     this.view_components.data.update();
+    this.view_components.code.update();
   }
 
   // Animation functions
