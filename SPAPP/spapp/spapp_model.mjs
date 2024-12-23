@@ -20,7 +20,11 @@ export default class Spapp_model {
       ROBOT_SIZE,
       15
     );
-    this.robot_controller= new Pure_pursuit_controller(this.parent, this.robot, this.path);
+    this.robot_controller = new Pure_pursuit_controller(
+      this.parent,
+      this.robot,
+      this.path
+    );
   }
   animate(time_change) {
     this.robot.update(time_change);
@@ -36,6 +40,9 @@ export default class Spapp_model {
     if (y) point.y = y;
     if (is_fwd) point.is_fwd = is_fwd;
     if (is_stop) point.is_stop = is_stop;
+  }
+  change_data_point_by_index(index, id, value) {
+    this.path.path_points[index][id] = value;
   }
   reset_robot() {
     this.robot.pos.x = this.path.path_points[0].x;

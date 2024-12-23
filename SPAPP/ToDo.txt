@@ -1,0 +1,8 @@
+deactivate canvas clicks while running
+code output
+footer x-y hover coordinates
+tool-tip hints or labels for data members
+menu for selecting paths
+saving paths
+
+touch events???

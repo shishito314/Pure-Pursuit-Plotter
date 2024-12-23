@@ -29,7 +29,13 @@ export default class Robotics_data {
     for (const d of this.spapp.model.path.path_points) {
       const { x, y } = d;
       this.data_points.push(
-        new Robotics_data_point({ parent: this.container, x, y })
+        new Robotics_data_point({
+          parent: this.container,
+          spapp: this.spapp,
+          data_point_index: this.data_points.length,
+          x,
+          y,
+        })
       );
     }
   }

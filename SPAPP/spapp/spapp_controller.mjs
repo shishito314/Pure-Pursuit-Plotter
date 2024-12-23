@@ -46,7 +46,6 @@ export default class Spapp_controller {
     // Keyboard
     document.addEventListener("keydown", this.handleKD.bind(this));
     document.addEventListener("keyup", this.handleKU.bind(this));
-
   }
   // Event Handling Functions
   // NOTE: These might cause regenerations more than necessary by calling
@@ -110,10 +109,10 @@ export default class Spapp_controller {
   handleKD(e) {
     switch (e.code) {
       case "KeyR":
-        this.reset()
+        this.reset();
         break;
       case "KeyE":
-        this.start()
+        this.start();
         break;
       // todo: control z
     }
@@ -125,6 +124,12 @@ export default class Spapp_controller {
   handle_resize(e) {
     this.view_components.graphics.update();
   }
+
+  handle_data_component_change(data_point_index, id, value) {
+    this.parent.model.change_data_point_by_index(data_point_index, id, value);
+    this.view_components.graphics.update();
+  }
+
   // Model Interfacing Functions
   pause() {}
   // play() {}
@@ -157,5 +162,5 @@ export default class Spapp_controller {
     this.view_components.data.update();
   }
 
-// Animation functions
+  // Animation functions
 }
