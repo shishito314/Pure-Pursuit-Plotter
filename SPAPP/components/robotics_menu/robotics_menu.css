@@ -1,8 +1,14 @@
 .robotics_menu {
-  display: flex;
-  position: relative;
+  display: grid;
+  /* position: relative; */
+  grid-column: 1 / 4;
+  grid-template-columns: subgrid;
   background-color: rgb(19, 88, 156);
   width: 100%;
   height: 100%;
   padding: 0.1em;
+}
+
+.robotics_menu_section {
+  display: flex;
 }

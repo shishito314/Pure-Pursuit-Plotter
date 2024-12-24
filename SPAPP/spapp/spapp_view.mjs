@@ -40,6 +40,7 @@ export default class Spapp_view {
       type: "div",
       classes: ["top_menu"],
       parent: this.spapp,
+      styles: { display: "grid", "grid-template-columns": "subgrid"}
     });
     this.left_panel = create_element({
       type: "div",

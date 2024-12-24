@@ -4,14 +4,14 @@ export default class Robotics_code {
   constructor({ parent, spapp }) {
     this.parent = parent;
     this.spapp = spapp;
-    this.container = create_element({ type: "div", parent: this.parent });
+    this.container = create_element({ type: "div", parent: this.parent, styles: {width: "25em"} });
     // for (let i = 0; i < 15; ++i) {
     //   this.container.innerHTML += "<p>robotics code</p>";
     // }
   }
   update() {
     // Generate Code
-    let codeStr = "const PathPoint path[] = {<br>"
+    let codeStr = "#pragma once<br><br>const PathPoint path[] = {<br>"
     // console.log(this.pathPoints);
     for (const point of this.spapp.model.path.path_points) {
       // console.log(p);

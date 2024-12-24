@@ -3,7 +3,7 @@ import { angle_range_pn_pi, angle_range_zero_to_two_pi, boundedCircleLineInterse
 export const LOOK_AHEAD_RAD = 6; // total guess
 const kPLinear = 0.05 / LOOK_AHEAD_RAD;
 const kPAngle = 1 / LOOK_AHEAD_RAD;
-const STOP_TOLERANCE = 2;
+const STOP_TOLERANCE = 1;
 
 export default class Pure_pursuit_controller {
   constructor(spapp, robot, path) {

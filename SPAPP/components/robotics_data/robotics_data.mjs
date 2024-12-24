@@ -13,6 +13,7 @@ export default class Robotics_data {
       type: "div",
       classes: ["robotics_data"],
       parent: this.parent,
+      styles: {width: "14em"}
     });
     this.data_points = [];
     this.overlay_screen = create_element({

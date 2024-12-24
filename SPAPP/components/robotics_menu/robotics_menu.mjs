@@ -13,9 +13,28 @@ export default class Robotics_menu {
     this.container = create_element({
       type: "div",
       classes: ["robotics_menu"],
+      // styles: { display: "grid" }
+    });
+    this.left_container = create_element({
+      type: "div",
+      parent: this.container,
+      classes: ["robotics_menu_section"],
+      styles: {"grid-column": "1 / 2"}
+    });
+    this.center_container = create_element({
+      type: "div",
+      parent: this.container,
+      classes: ["robotics_menu_section"],
+      styles: {"grid-column": "2 / 3"}
+    });
+    this.right_container = create_element({
+      type: "div",
+      parent: this.container,
+      classes: ["robotics_menu_section"],
+      styles: {"grid-column": "3 / 4"}
     });
     this.logo = new Logo({
-      parent: this.container,
+      parent: this.left_container,
       path_to_image: LOGO,
       styles: { order: 1, "padding-right": "0.5em" },
     });
@@ -40,34 +59,40 @@ export default class Robotics_menu {
     //   styles: { order: 4 },
     // });
     this.buttom_play_mixed = new Menu_button({
-      parent: this.container,
+      parent: this.center_container,
       icon_classes: ["fa", "fa-play-circle"],
       text: " Play",
       styles: { order: 5 },
     });
     this.buttom_pause_mixed = new Menu_button({
-      parent: this.container,
+      parent: this.center_container,
       icon_classes: ["fa", "fa-pause-circle"],
       text: " Pause",
       styles: { order: 6 },
     });
     this.buttom_stop_mixed = new Menu_button({
-      parent: this.container,
+      parent: this.center_container,
       icon_classes: ["fa", "fa-stop-circle"],
       text: " Stop",
       styles: { order: 7 },
     });
     this.buttom_import_mixed = new Menu_button({
-      parent: this.container,
+      parent: this.left_container,
       icon_classes: ["fa", "fa-download"],
       text: " Import",
       styles: { order: 8 },
     });
+    this.buttom_copy_mixed = new Menu_button({
+      parent: this.right_container,
+      icon_classes: ["fa", "fa-copy"],
+      text: " Copy",
+      styles: { order: 9 },
+    });
     this.buttom_export_mixed = new Menu_button({
-      parent: this.container,
+      parent: this.right_container,
       icon_classes: ["fa", "fa-upload"],
       text: " Export",
-      styles: { order: 9 },
+      styles: { order: 10 },
     });
 
     // this.button_random_mixed = new Menu_button({

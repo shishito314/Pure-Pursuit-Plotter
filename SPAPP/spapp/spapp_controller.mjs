@@ -25,6 +25,8 @@ export default class Spapp_controller {
     this.view_components.menu.buttom_play_mixed.button.addEventListener("click", this.start.bind(this));
     this.view_components.menu.buttom_pause_mixed.button.addEventListener("click", this.pause.bind(this));
     this.view_components.menu.buttom_stop_mixed.button.addEventListener("click", this.reset.bind(this));
+    // this.view_components.menu.buttom_import_mixed.button.addEventListener("click", this.import.bind(this));
+    // this.view_components.menu.buttom_export_mixed.button.addEventListener("click", this.export.bind(this));
 
     // Graphics Mouse Controls
     this.view_components.graphics.top_canvas.canvas.addEventListener(
@@ -116,7 +118,8 @@ export default class Spapp_controller {
         this.reset();
         break;
       case "KeyE":
-        this.start();
+        if (!this.parent.is_running) this.start();
+        else this.pause();
         break;
       // todo: control z
     }
