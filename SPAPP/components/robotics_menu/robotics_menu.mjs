@@ -34,9 +34,9 @@ export default class Robotics_menu {
       styles: {"grid-column": "3 / 4"}
     });
     this.logo = new Logo({
-      parent: this.left_container,
+      parent: this.container,
       path_to_image: LOGO,
-      styles: { order: 1, "padding-right": "0.5em" },
+      styles: { order: 1, "padding-right": "0.5em", position: "absolute", left:0}//, position: "absolute", left: 0 },
     });
     this.create_buttons();
     this.parent.appendChild(this.container);

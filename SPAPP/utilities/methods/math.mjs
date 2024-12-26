@@ -29,32 +29,43 @@ export function getBezierPoint(p1, p2, p3, p4, val) {
 
 export function circleLineIntersect(p1, p2, pc, r) {
   // TODO: change if vertical line
-  let slope = (p2.y - p1.y) / (p2.x - p1.x);
-  let a = slope * slope + 1;
-  let b = -(
-    2 * slope * slope * p1.x +
-    2 * slope * pc.y -
-    2 * slope * p1.y +
-    2 * pc.x
-  );
-  let c =
-    slope * slope * p1.x * p1.x +
-    p1.y * p1.y +
-    pc.y * pc.y -
-    2 * slope * p1.y * p1.x +
-    2 * slope * pc.y * p1.x -
-    2 * p1.y * pc.y +
-    pc.x * pc.x -
-    r * r;
-  let xInts = solveQuadratic(a, b, c);
-  let yInts = [
-    slope * (xInts[0] - p1.x) + p1.y,
-    slope * (xInts[1] - p1.x) + p1.y,
-  ];
-  return [
-    { x: xInts[0], y: yInts[0] },
-    { x: xInts[1], y: yInts[1] },
-  ];
+  if (p1.x == p2.x) {
+    let yInts = [
+      pc.y + Math.sqrt(r*r - (p1.x-pc.x)*(p1.x-pc.x)),
+      pc.y - Math.sqrt(r*r - (p1.x-pc.x)*(p1.x-pc.x))
+    ];
+    return [
+      { x: p1.x, y: yInts[0] },
+      { x: p1.x, y: yInts[1] },
+    ];
+  } else {
+    let slope = (p2.y - p1.y) / (p2.x - p1.x);
+    let a = slope * slope + 1;
+    let b = -(
+      2 * slope * slope * p1.x +
+      2 * slope * pc.y -
+      2 * slope * p1.y +
+      2 * pc.x
+    );
+    let c =
+      slope * slope * p1.x * p1.x +
+      p1.y * p1.y +
+      pc.y * pc.y -
+      2 * slope * p1.y * p1.x +
+      2 * slope * pc.y * p1.x -
+      2 * p1.y * pc.y +
+      pc.x * pc.x -
+      r * r;
+    let xInts = solveQuadratic(a, b, c);
+    let yInts = [
+      slope * (xInts[0] - p1.x) + p1.y,
+      slope * (xInts[1] - p1.x) + p1.y,
+    ];
+    return [
+      { x: xInts[0], y: yInts[0] },
+      { x: xInts[1], y: yInts[1] },
+    ];
+  }
 }
 
 export function boundedCircleLineIntersect(p1, p2, pc, r) {
@@ -65,15 +76,15 @@ export function boundedCircleLineIntersect(p1, p2, pc, r) {
   let lesserX = Math.min(p1.x, p2.x);
   if (
     intersects[0].x &&
-    intersects[0].x > lesserX &&
-    intersects[0].x < greaterX
+    intersects[0].x >= lesserX &&
+    intersects[0].x <= greaterX
   ) {
     result.push(intersects[0]);
   }
   if (
     intersects[1].x &&
-    intersects[1].x > lesserX &&
-    intersects[1].x < greaterX
+    intersects[1].x >= lesserX &&
+    intersects[1].x <= greaterX
   ) {
     result.push(intersects[1]);
   }

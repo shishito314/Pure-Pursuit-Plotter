@@ -6,7 +6,7 @@
   gap: 0.25em;
   overflow-y: auto;
   padding-left: 0.2em;
-
+  width: 11em;
   /* position: absolute;
   left: 0;
   top: 0; */
@@ -27,11 +27,12 @@
 }
 
 .robotics_data_point {
-  background-color: rgb(194, 203, 212);
+  /* width: 100%; */
+  /* background-color: rgb(194, 203, 212); */
 }
 
 .robotics_data_component {
-  background-color: rgb(194, 203, 212);
+  /* background-color: rgb(194, 203, 212); */
   font-size: 0.75em;
   width: 5em;
 }
@@ -42,4 +43,22 @@
 
 .robotics_data_component_delete {
   border-radius: 2px;
+}
+
+.motion_controls_container {
+  display: flex;
+}
+
+.robotics_data_motion {
+  background-color: rgb(194, 203, 212);
+}
+
+.robotics_data_motion_selected {
+  background-color: rgb(66, 84, 102);
+}
+
+.robotics_motion_component_delete {
+  border-radius: 2px;
+  /* justify-self: right; */
+  /* right: 0; */
 }

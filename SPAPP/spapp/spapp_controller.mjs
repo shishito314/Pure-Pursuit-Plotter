@@ -1,5 +1,6 @@
 import { FIELD_SIZE } from "../model/config.mjs";
 import Path_point from "../model/path_point.mjs";
+import Robot_motion from "../model/robot_motion.mjs";
 import { dist } from "../utilities/methods/math.mjs";
 import observe_resizing from "../utilities/methods/observe_resizing.mjs";
 
@@ -10,6 +11,7 @@ export default class Spapp_controller {
     console.log("Spapp_controller()");
     this.parent = parent;
     this.view_components = this.parent.view.components;
+    this.motion_focus_index = 0;
 
     // Resize
     this.resize_observer = observe_resizing({
@@ -22,7 +24,7 @@ export default class Spapp_controller {
     //   "click",
     //   this.add_random_data_point.bind(this)
     // );
-    this.view_components.menu.buttom_play_mixed.button.addEventListener("click", this.start.bind(this));
+    this.view_components.menu.buttom_play_mixed.button.addEventListener("click", this.play.bind(this));
     this.view_components.menu.buttom_pause_mixed.button.addEventListener("click", this.pause.bind(this));
     this.view_components.menu.buttom_stop_mixed.button.addEventListener("click", this.reset.bind(this));
     // this.view_components.menu.buttom_import_mixed.button.addEventListener("click", this.import.bind(this));
@@ -55,16 +57,16 @@ export default class Spapp_controller {
   // Event Handling Functions
   // NOTE: These might cause regenerations more than necessary by calling
   // the Model Interfacing Functions
-  add_random_data_point() {
-    this.add_data_point(
-      new Path_point({
-        x: Math.floor(1000 * Math.random()) / 100,
-        y: Math.floor(1000 * Math.random()) / 100,
-        is_fwd: true,
-        is_stop: false,
-      })
-    );
-  }
+  // add_random_data_point() {
+  //   this.add_data_point(
+  //     new Path_point({
+  //       x: Math.floor(1000 * Math.random()) / 100,
+  //       y: Math.floor(1000 * Math.random()) / 100,
+  //       is_fwd: true,
+  //       is_stop: false,
+  //     })
+  //   );
+  // }
 
   handle_graphics_MD(e) {
     this.mouse_is_down = true;
@@ -72,17 +74,19 @@ export default class Spapp_controller {
     loc.x = Math.round(loc.x * 100) / 100;
     loc.y = Math.round(loc.y * 100) / 100;
     let moving = false;
-    for (const p of this.parent.model.path.path_points) {
-      if (dist(p, loc) < MOVE_THRESHOLD) {
-        // TODO: base off of canvas coordinates instead of model ones
-        this.moving_point = p;
-        moving = true;
-        break;
+    for (const motion of this.parent.model.path.motions) {
+      for (const p of motion.path_points) {
+        if (dist(p, loc) < MOVE_THRESHOLD) {
+          // TODO: base off of canvas coordinates instead of model ones
+          this.moving_point = p;
+          moving = true;
+          break;
+        }
       }
     }
     if (!moving) {
       this.add_data_point(
-        new Path_point({ x: loc.x, y: loc.y, is_fwd: true, is_stop: false })
+        new Path_point({ x: loc.x, y: loc.y, /*is_fwd: true, is_stop: false*/ })
       );
     }
     // TODO: starting path logic
@@ -118,9 +122,16 @@ export default class Spapp_controller {
         this.reset();
         break;
       case "KeyE":
-        if (!this.parent.is_running) this.start();
+        if (!this.parent.is_running) this.play();
+        else if (this.parent.model.robot_controller.at_end) this.play();
         else this.pause();
         break;
+      case "KeyQ":
+        this.parent.model.path.motions.push(new Robot_motion(this.parent, true, false));
+        this.view_components.data.update();
+        this.view_components.graphics.update();
+        this.view_components.code.update();
+        this.handle_set_motion_focus(this.parent.model.path.motions.length - 1);
       // todo: control z
     }
   }
@@ -132,16 +143,34 @@ export default class Spapp_controller {
     this.view_components.graphics.update();
   }
 
-  handle_data_component_change(data_point_index, id, value) {
-    this.parent.model.change_data_point_by_index(data_point_index, id, value);
+  handle_motion_component_change(motion_index, id, value) {
+    this.parent.model.change_motion_by_index(motion_index, id, value);
     this.view_components.graphics.update();
     this.view_components.code.update();
   }
-  handle_data_component_delete(data_point_index) {
-    this.parent.model.delete_data_point_by_index(data_point_index);
+  handle_motion_component_delete(motion_index) {
+    this.parent.model.delete_motion_by_index(motion_index);
+    if (this.motion_focus_index >= this.parent.model.path.motions.length) this.motion_focus_index = this.parent.model.path.motions.length - 1;
     this.view_components.data.update();
     this.view_components.graphics.update();
     this.view_components.code.update();
+  }
+
+  handle_data_component_change(motion_index, data_point_index, id, value) {
+    this.parent.model.change_data_point_by_index(motion_index, data_point_index, id, value);
+    this.view_components.graphics.update();
+    this.view_components.code.update();
+  }
+  handle_data_component_delete(motion_index, data_point_index) {
+    this.parent.model.delete_data_point_by_index(motion_index, data_point_index);
+    this.view_components.data.update();
+    this.view_components.graphics.update();
+    this.view_components.code.update();
+  }
+
+  handle_set_motion_focus(motion_index) {
+    this.motion_focus_index = motion_index;
+    this.parent.view.components.data.set_motion_focus(motion_index);
   }
 
   // Model Interfacing Functions
@@ -149,13 +178,12 @@ export default class Spapp_controller {
     this.parent.model.robot_controller.is_running = false;
     this.parent.is_running = false;
   }
-  // play() {}
   reset() {
     this.parent.model.reset_robot();
     this.view_components.graphics.update();
     this.view_components.data.unshow_overlay();
   }
-  start() {
+  play() {
     if (!this.parent.is_running) {
       this.parent.is_running = true;
       requestAnimationFrame(this.parent.animate.bind(this.parent));
@@ -163,10 +191,13 @@ export default class Spapp_controller {
       // Lock out side panel
       this.view_components.data.show_overlay();
     }
-    this.parent.model.robot_controller.go_to_next_stop();
+    if (this.parent.model.robot_controller.at_end) // do next motion
+      this.parent.model.robot_controller.do_next_motion();
+    else // resume
+      this.parent.model.robot_controller.is_running = true;
   }
   add_data_point(point) {
-    this.parent.model.add_data_point(point);
+    this.parent.model.add_data_point(point, this.motion_focus_index);
     this.view_components.graphics.update();
     this.view_components.data.update();
     this.view_components.code.update();

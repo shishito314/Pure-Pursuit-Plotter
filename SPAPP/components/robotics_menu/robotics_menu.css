@@ -5,10 +5,11 @@
   grid-template-columns: subgrid;
   background-color: rgb(19, 88, 156);
   width: 100%;
-  height: 100%;
+  height: 2em;
   padding: 0.1em;
 }
 
 .robotics_menu_section {
   display: flex;
+  justify-content: center;
 }
