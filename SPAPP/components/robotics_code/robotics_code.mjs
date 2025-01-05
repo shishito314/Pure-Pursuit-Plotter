@@ -27,4 +27,16 @@ export default class Robotics_code {
     // codeStr += "constexpr size_t numPathPoints{" + this.spapp.model.path.path_points.length + "};"
     this.container.innerHTML = codeStr;
   }
+  getCode() {
+    let codeStr = "#pragma once\n\nconst PathPoint path[] = {\n"
+    for (const motion of this.spapp.model.path.motions) {
+      for (const point of motion.path_points) {
+        codeStr += " PathPoint("
+        codeStr += point.x + ", ";
+        codeStr += point.y + ", ";
+      }
+    }
+    codeStr += "};\n\n";
+    return codeStr;
+  }
 }

@@ -1,3 +1,4 @@
+import Robotics_popup from "../components/robotics_popup/robotics_popup.mjs";
 import Robotics_code from "../components/robotics_code/robotics_code.mjs";
 import Robotics_data from "../components/robotics_data/robotics_data.mjs";
 import Robotics_footer from "../components/robotics_footer/robotics_footer.mjs";
@@ -32,6 +33,7 @@ export default class Spapp_view {
       }),
       code: new Robotics_code({ parent: this.right_panel, spapp: this.parent }),
       footer: new Robotics_footer({ parent: this.footer, spapp: this.parent }),
+      popup: new Robotics_popup(),
     };
   }
   construct_grid() {

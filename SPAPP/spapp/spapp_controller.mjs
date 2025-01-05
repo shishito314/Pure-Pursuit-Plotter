@@ -27,8 +27,9 @@ export default class Spapp_controller {
     this.view_components.menu.buttom_play_mixed.button.addEventListener("click", this.play.bind(this));
     this.view_components.menu.buttom_pause_mixed.button.addEventListener("click", this.pause.bind(this));
     this.view_components.menu.buttom_stop_mixed.button.addEventListener("click", this.reset.bind(this));
-    // this.view_components.menu.buttom_import_mixed.button.addEventListener("click", this.import.bind(this));
-    // this.view_components.menu.buttom_export_mixed.button.addEventListener("click", this.export.bind(this));
+    this.view_components.menu.buttom_import_mixed.button.addEventListener("click", this.import.bind(this));
+    this.view_components.menu.buttom_copy_mixed.button.addEventListener("click", this.copy.bind(this));
+    this.view_components.menu.buttom_export_mixed.button.addEventListener("click", this.export.bind(this));
 
     // Graphics Mouse Controls
     this.view_components.graphics.top_canvas.canvas.addEventListener(
@@ -150,7 +151,8 @@ export default class Spapp_controller {
   }
   handle_motion_component_delete(motion_index) {
     this.parent.model.delete_motion_by_index(motion_index);
-    if (this.motion_focus_index >= this.parent.model.path.motions.length) this.motion_focus_index = this.parent.model.path.motions.length - 1;
+    if (this.motion_focus_index >= this.parent.model.path.motions.length)
+      this.motion_focus_index = this.parent.model.path.motions.length - 1;
     this.view_components.data.update();
     this.view_components.graphics.update();
     this.view_components.code.update();
@@ -196,6 +198,16 @@ export default class Spapp_controller {
     else // resume
       this.parent.model.robot_controller.is_running = true;
   }
+  import() {
+    // TODO
+  }
+  copy() {
+    navigator.clipboard.writeText(this.view_components.code.getCode());
+  }
+  export() {
+    this.view_components.popup.container.style.display = "block";
+  }
+
   add_data_point(point) {
     this.parent.model.add_data_point(point, this.motion_focus_index);
     this.view_components.graphics.update();
