@@ -33,7 +33,7 @@ export default class Spapp_view {
       }),
       code: new Robotics_code({ parent: this.right_panel, spapp: this.parent }),
       footer: new Robotics_footer({ parent: this.footer, spapp: this.parent }),
-      popup: new Robotics_popup(),
+      popup: new Robotics_popup({ spapp: this.parent }),
     };
   }
   construct_grid() {
@@ -42,7 +42,7 @@ export default class Spapp_view {
       type: "div",
       classes: ["top_menu"],
       parent: this.spapp,
-      styles: { display: "grid", "grid-template-columns": "subgrid"}
+      styles: { display: "grid", "grid-template-columns": "subgrid" },
     });
     this.left_panel = create_element({
       type: "div",
