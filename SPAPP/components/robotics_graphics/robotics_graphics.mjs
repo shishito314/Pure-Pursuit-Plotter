@@ -4,7 +4,7 @@ import Maximal_square_canvas from "../maximal_square_canvas/maximal_square_canva
 import Resizable_background_canvas from "../maximal_square_canvas/resizable_background_canvas.mjs";
 
 const STYLES = "components/robotics_graphics/robotics_graphics.css";
-const BACKGROUND_IMAGE = "assets/field2.png";
+const BACKGROUND_IMAGE = "assets/field3.png";
 
 export default class Robotics_graphics {
   constructor({ parent, spapp }) {
@@ -55,7 +55,12 @@ export default class Robotics_graphics {
     );
   }
   animate() {
-    this.top_canvas.context.clearRect(0, 0, this.top_canvas.canvas.width, this.top_canvas.canvas.height);
+    this.top_canvas.context.clearRect(
+      0,
+      0,
+      this.top_canvas.canvas.width,
+      this.top_canvas.canvas.height
+    );
     // this.spapp.model.path.draw();
     this.spapp.model.robot_controller.draw(this.top_canvas.context);
     this.spapp.model.robot.draw(this.top_canvas.context);
