@@ -1,42 +1,44 @@
 import create_element from "../../utilities/methods/create_element.mjs";
+import link_styles from "../../utilities/methods/link_styles.mjs";
+
+const STYLES = "components/robotics_code/robotics_code.css";
 
 export default class Robotics_code {
   constructor({ parent, spapp }) {
     this.parent = parent;
     this.spapp = spapp;
-    this.container = create_element({ type: "div", parent: this.parent, styles: {width: "25em"} });
+    this.styles = link_styles({ css_href: STYLES });
+    this.container = create_element({ type: "div", parent: this.parent, classes: ["robotics_code"], });
     // for (let i = 0; i < 15; ++i) {
     //   this.container.innerHTML += "<p>robotics code</p>";
     // }
   }
   update() {
     // Generate Code
-    let codeStr = "#pragma once<br><br>const PathPoint path[] = {<br>"
-    // console.log(this.pathPoints);
+    let codeStr = "#pragma once<br>#include \"vector.h\"<br>#include \"path-motion.h\"<br>";
     for (const motion of this.spapp.model.path.motions) {
+      codeStr += "<br>const PathMotion path{" + motion.is_fwd + ", " + motion.is_stop + ", {<br>";
       for (const point of motion.path_points) {
-        // console.log(p);
-        codeStr += "&emsp;PathPoint("
+        codeStr += "&emsp;Vector{"
         codeStr += point.x + ", ";
-        codeStr += point.y + ", ";
-        // codeStr += point.is_fwd + ", ";
-        // codeStr += point.is_stop + "),<br>";
+        codeStr += point.y + "},<br>";
       }
+      codeStr += "}};<br><br>";
     }
-    codeStr += "};<br><br>";
     // codeStr += "constexpr size_t numPathPoints{" + this.spapp.model.path.path_points.length + "};"
     this.container.innerHTML = codeStr;
   }
   getCode() {
-    let codeStr = "#pragma once\n\nconst PathPoint path[] = {\n"
+    let codeStr = "#pragma once\n#include \"vector.h\"\n#include \"path-motion.h\"\n";
     for (const motion of this.spapp.model.path.motions) {
+      codeStr += "\nconst PathMotion path{" + motion.is_fwd + ", " + motion.is_stop + ", {\n";
       for (const point of motion.path_points) {
-        codeStr += " PathPoint("
+        codeStr += " Vector{"
         codeStr += point.x + ", ";
-        codeStr += point.y + ", ";
+        codeStr += point.y + "},\n";
       }
+      codeStr += "}};\n\n";
     }
-    codeStr += "};\n\n";
     return codeStr;
   }
 }

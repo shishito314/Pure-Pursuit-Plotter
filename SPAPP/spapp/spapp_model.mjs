@@ -34,7 +34,11 @@ export default class Spapp_model {
 
   // Controller interfacing functions
   add_data_point(point, motion_index) {
-    this.path.motions[motion_index].path_points.push(point);
+    if (this.path.motions[motion_index].motion_type == "bezier") {
+      this.path.motions[motion_index].control_points.push(point);
+    } else {
+      this.path.motions[motion_index].path_points.push(point);
+    }
   }
   change_motion_by_index(motion_index, id, value) {
     this.path.motions[motion_index][id] = value;
@@ -49,10 +53,24 @@ export default class Spapp_model {
     // if (is_stop) point.is_stop = is_stop;
   }
   change_data_point_by_index(motion_index, index, id, value) {
-    this.path.motions[motion_index].path_points[index][id] = value;
+    switch(this.path.motions[motion_index].motion_type) {
+      case "standard":
+        this.path.motions[motion_index].path_points[index][id] = value;
+        break;
+      case "bezier":
+        this.path.motions[motion_index].control_points[index][id] = value;
+        break;
+    }
   }
   delete_data_point_by_index(motion_index, index) {
-    this.path.motions[motion_index].path_points.splice(index, 1);
+    switch(this.path.motions[motion_index].motion_type) {
+      case "standard":
+        this.path.motions[motion_index].path_points.splice(index, 1);
+        break;
+      case "bezier":
+        this.path.motions[motion_index].control_points.splice(index, 1);
+        break;
+    }
   }
   reset_robot() {
     if (!this.path.motions.length) return;

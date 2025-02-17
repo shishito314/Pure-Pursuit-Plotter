@@ -38,7 +38,16 @@ export default class Robotics_data {
         is_fwd: motion.is_fwd,
         is_stop: motion.is_stop
       }));
-      for (const d of motion.path_points) {
+      let points_for_data;
+      switch(motion.motion_type) {
+        case "standard":
+          points_for_data = motion.path_points;
+          break;
+        case "bezier":
+          points_for_data = motion.control_points;
+          break;
+      }
+      for (const d of points_for_data) {
         const { x, y, /*is_fwd, is_stop*/ } = d;
         this.data_motions[this.data_motions.length - 1].data_points.push(
           new Robotics_data_point({

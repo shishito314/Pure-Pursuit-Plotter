@@ -4,6 +4,7 @@ export default class Robot_motion {
       this.path_points = [];
       this.is_fwd = is_fwd;
       this.is_stop = is_stop;
+      this.motion_type = "standard";
     }
     draw(context) {
       if (this.path_points.length) {
