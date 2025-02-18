@@ -1,6 +1,7 @@
 import { FIELD_SIZE } from "../model/config.mjs";
 import Path_point from "../model/path_point.mjs";
 import Robot_motion from "../model/robot_motion.mjs";
+import Robot_motion_bezier from "../model/robot_motion_bezier.mjs";
 import { dist } from "../utilities/methods/math.mjs";
 import observe_resizing from "../utilities/methods/observe_resizing.mjs";
 
@@ -58,6 +59,7 @@ export default class Spapp_controller {
   // Event Handling Functions
   // NOTE: These might cause regenerations more than necessary by calling
   // the Model Interfacing Functions
+
   // add_random_data_point() {
   //   this.add_data_point(
   //     new Path_point({
@@ -70,13 +72,23 @@ export default class Spapp_controller {
   // }
 
   handle_graphics_MD(e) {
+    if (!this.parent.model.path.motions.length) return;
     this.mouse_is_down = true;
     let loc = this.parent.model.convert_to_model_coords(e.offsetX, e.offsetY);
     loc.x = Math.round(loc.x * 100) / 100;
     loc.y = Math.round(loc.y * 100) / 100;
     let moving = false;
     for (const motion of this.parent.model.path.motions) {
-      for (const p of motion.path_points) {
+      let draggable_points;
+      switch(motion.motion_type) {
+        case "standard":
+          draggable_points = motion.path_points;
+          break;
+        case "bezier":
+          draggable_points = motion.control_points;
+          break;
+      }
+      for (const p of draggable_points) {
         if (dist(p, loc) < MOVE_THRESHOLD) {
           // TODO: base off of canvas coordinates instead of model ones
           this.moving_point = p;
@@ -128,7 +140,16 @@ export default class Spapp_controller {
         else this.pause();
         break;
       case "KeyQ":
-        this.parent.model.path.motions.push(new Robot_motion(this.parent, true, false));
+        let motion_type = prompt("What kind of Robot Motion would you like to add?", "bezier").toLowerCase();
+        switch(motion_type) {
+          case "standard":
+            this.parent.model.path.motions.push(new Robot_motion(this.parent, true, false));
+            break;
+          case "bezier":
+            this.parent.model.path.motions.push(new Robot_motion_bezier(this.parent, true, false));
+            break;
+        }
+        // this.parent.model.path.motions.push(new Robot_motion(this.parent, true, false));
         this.view_components.data.update();
         this.view_components.graphics.update();
         this.view_components.code.update();

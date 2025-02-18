@@ -18,13 +18,13 @@ export function angle_range_pn_pi(angle) {
   return angle - Math.floor((angle + Math.PI) / (2 * Math.PI)) * (2 * Math.PI);
 }
 
-export function getBezierPoint(p1, p2, p3, p4, val) {
-  let p5 = this.lerp(p1, p2, val);
-  let p6 = this.lerp(p2, p3, val);
-  let p7 = this.lerp(p3, p4, val);
-  let p8 = this.lerp(p5, p6, val);
-  let p9 = this.lerp(p6, p7, val);
-  return this.lerp(p8, p9, val);
+export function get_bezier_point(p1, p2, p3, p4, val) {
+  let p5 = lerp(p1, p2, val);
+  let p6 = lerp(p2, p3, val);
+  let p7 = lerp(p3, p4, val);
+  let p8 = lerp(p5, p6, val);
+  let p9 = lerp(p6, p7, val);
+  return lerp(p8, p9, val);
 }
 
 export function circleLineIntersect(p1, p2, pc, r) {
@@ -103,7 +103,7 @@ export default {
   dist,
   angle_range_zero_to_two_pi,
   angle_range_pn_pi,
-  getBezierPoint,
+  get_bezier_point,
   circleLineIntersect,
   boundedCircleLineIntersect,
 };
