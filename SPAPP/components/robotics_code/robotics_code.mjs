@@ -2,6 +2,7 @@ import create_element from "../../utilities/methods/create_element.mjs";
 import link_styles from "../../utilities/methods/link_styles.mjs";
 
 const STYLES = "components/robotics_code/robotics_code.css";
+const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 export default class Robotics_code {
   constructor({ parent, spapp }) {
@@ -16,8 +17,9 @@ export default class Robotics_code {
   update() {
     // Generate Code
     let codeStr = "#pragma once<br>#include \"vector.h\"<br>#include \"path-motion.h\"<br>";
-    for (const motion of this.spapp.model.path.motions) {
-      codeStr += "<br>const PathMotion path{" + motion.is_fwd + ", " + motion.is_stop + ", {<br>";
+    for (const i in this.spapp.model.path.motions) {
+      const motion = this.spapp.model.path.motions[i];
+      codeStr += "<br>const PathMotion path" + ALPHABET[i] + "{" + motion.is_fwd + ", " + motion.is_stop + ", {<br>";
       for (const point of motion.path_points) {
         codeStr += "&emsp;Vector{"
         codeStr += point.x + ", ";
@@ -30,10 +32,11 @@ export default class Robotics_code {
   }
   getCode() {
     let codeStr = "#pragma once\n#include \"vector.h\"\n#include \"path-motion.h\"\n";
-    for (const motion of this.spapp.model.path.motions) {
-      codeStr += "\nconst PathMotion path{" + motion.is_fwd + ", " + motion.is_stop + ", {\n";
+    for (const i in this.spapp.model.path.motions) {
+      const motion = this.spapp.model.path.motions[i];
+      codeStr += "\nconst PathMotion path" + ALPHABET[i] + "{" + motion.is_fwd + ", " + motion.is_stop + ", {\n";
       for (const point of motion.path_points) {
-        codeStr += " Vector{"
+        codeStr += "\tVector{"
         codeStr += point.x + ", ";
         codeStr += point.y + "},\n";
       }

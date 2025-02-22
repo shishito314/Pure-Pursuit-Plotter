@@ -2,7 +2,7 @@ import { angle_range_pn_pi, angle_range_zero_to_two_pi, boundedCircleLineInterse
 
 export const LOOK_AHEAD_RAD = 8; // total guess
 const kPLinear = 0.020625 * Math.PI / LOOK_AHEAD_RAD;
-const kPAngle = 1 / LOOK_AHEAD_RAD;
+const kPAngle = 1.5 / LOOK_AHEAD_RAD;
 const STOP_TOLERANCE = 0.5;
 
 export default class Pure_pursuit_controller {

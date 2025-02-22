@@ -1,7 +1,7 @@
 import Robot_motion from "./robot_motion.mjs";
 import { get_bezier_point } from "../utilities/methods/math.mjs";
 
-const POINT_STEP = 0.02;
+const POINT_STEP = 0.04;
 
 export default class Robot_motion_bezier extends Robot_motion {
   constructor(spapp, is_fwd, is_stop) {
